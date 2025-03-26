@@ -9,6 +9,10 @@ const AdminUtils = () => {
         <input type="text" name="title" />
       </div>
       <div>
+        <label htmlFor="description">Description</label>
+        <input type="text" name="description" />
+      </div>
+      <div>
         <label htmlFor="file">Upload File or PDF</label>
         <input type="file" name="file" />
       </div>

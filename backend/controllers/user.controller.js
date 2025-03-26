@@ -1,7 +1,9 @@
+const File = require("../models/files.models");
 const User = require("../models/user.models");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asynHandler = require("../utils/asyncHandler");
+const uploadOnCloudinary = require("../utils/cloudinary");
 
 const generateToken = async (userId) => {
   try {
@@ -20,7 +22,7 @@ const generateToken = async (userId) => {
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
   console.log(req.body);
-  
+
   if (!(userName || email || password || isAdmin))
     return res
       .status(400)
@@ -106,4 +108,30 @@ const logOutUser = asynHandler(async (req, res) => {
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, undefined, "User logged out successfully"));
 });
-module.exports = { registerUser, logInUser, logOutUser };
+
+const uploadFile = asynHandler(async (req, res) => {
+  const { title, description, due_date } = req.body;
+  if (!(title && description)) // add due_date part here also later on, since it is necessary
+    return res.status(400).json(new ApiError(400, undefined, "All details are required"));
+
+  const fileLocalPath = req.file?.path;
+  if (!fileLocalPath) throw new ApiError(404, "file not found");
+
+  const file = await uploadOnCloudinary(fileLocalPath);
+  if (!file)
+    return res
+      .status(400)
+      .json(new ApiError(400, "failed to upload on cloudinary"));
+
+  const uploadedFile = await File.create({
+    title,
+    description,
+    due_date,
+    file_url: file?.url,
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, uploadedFile, "file uploaded successfully"));
+});
+module.exports = { registerUser, logInUser, logOutUser, uploadFile };
