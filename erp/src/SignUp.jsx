@@ -9,16 +9,16 @@ const SignUp = ({ backend_url }) => {
     userName: "",
     email: "",
     password: "",
-    isAdmin: "false"
+    isAdmin: false
   });
   
   const getData = (e) => {
     e.preventDefault();
-    setformData((prev) => ({ ...prev, isAdmin: true }));
+    // setformData((prev) => ({ ...prev, isAdmin: true }));
     console.log(backend_url, formData);
     
     axios
-      .get(`${backend_url}/user/register`, formData)
+      .post(`${backend_url}/user/register`, formData)
       .then(function (response) {
         console.log(response);
         let userDetails = [response.data.data];
@@ -43,7 +43,8 @@ const SignUp = ({ backend_url }) => {
   }, [formData])
   
   const changeRole = (e) => {
-    setrole(e.target.value);
+    let value = e.target.value === "true";
+    setrole(value);
     console.log(role);
   };
 

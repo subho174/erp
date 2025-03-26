@@ -3,7 +3,7 @@ const {registerUser, logInUser, logOutUser} = require("../controllers/user.contr
 const verifyJWT = require("../middleware/auth.middleware.js");
 
 const userRouter = express.Router();
-userRouter.get("/register", registerUser);
+userRouter.post("/register", registerUser);
 userRouter.post("/login", logInUser);
 userRouter.post("/logout", verifyJWT, logOutUser);
 

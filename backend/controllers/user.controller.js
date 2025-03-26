@@ -19,6 +19,8 @@ const generateToken = async (userId) => {
 };
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
+  console.log(req.body);
+  
   if (!(userName || email || password || isAdmin))
     return res
       .status(400)
