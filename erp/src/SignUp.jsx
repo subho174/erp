@@ -18,7 +18,7 @@ const SignUp = ({ backend_url }) => {
     console.log(backend_url, formData);
     
     axios
-      .post(`${backend_url}/user/register`, formData)
+      .get(`${backend_url}/user/register`, formData)
       .then(function (response) {
         console.log(response);
         let userDetails = [response.data.data];

@@ -22,7 +22,13 @@ const registerUser = asynHandler(async (req, res) => {
   if (!(userName || email || password || isAdmin))
     return res
       .status(400)
-      .json(new ApiResponse(400, "All details are required"));
+      .json(
+        new ApiResponse(
+          400,
+          { userName, email, password, isAdmin },
+          "All details are required"
+        )
+      );
   // throw new ApiError(400, "All details are required");
   const doesUserExist = await User.findOne({ email: email });
 
@@ -46,7 +52,7 @@ const registerUser = asynHandler(async (req, res) => {
 
 const logInUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
-  
+
   if (!(userName || email || password || isAdmin))
     return res
       .status(400)
