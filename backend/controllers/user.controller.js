@@ -45,12 +45,12 @@ const registerUser = asynHandler(async (req, res) => {
 });
 
 const logInUser = asynHandler(async (req, res) => {
-  const { email, password, isAdmin } = req.body;
-  if (!(email || password || isAdmin))
+  const { userName, email, password, isAdmin } = req.body;
+  if (!(userName, email || password || isAdmin))
     return res
       .status(400)
       .json(new ApiResponse(400, "All details are required"));
-  const findUser = await User.findOne({ email,userName });
+  const findUser = await User.findOne({ userName, email });
 
   if (!findUser)
     return res
