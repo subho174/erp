@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = ({ backend_url }) => {
-  const [role, setrole] = useState("true");
+  const [role, setrole] = useState(true);
   const navigate = useNavigate();
   const [formData, setformData] = useState({
     userName: "",
@@ -70,7 +70,7 @@ const SignUp = ({ backend_url }) => {
             name="isAdmin"
             value={false}
             onChange={changeRole}
-            checked={role == "false"}
+            checked={!role}
           />
           Student
           <input
@@ -78,7 +78,7 @@ const SignUp = ({ backend_url }) => {
             name="isAdmin"
             value={true}
             onChange={changeRole}
-            checked={role == "true"}
+            checked={role}
           />
           Admin
         </div>

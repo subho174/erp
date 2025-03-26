@@ -3,13 +3,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ backend_url }) => {
-  const [role, setrole] = useState("true");
+  const [role, setrole] = useState(true);
   const navigate = useNavigate();
   const [formData, setformData] = useState({
     userName: "",
     email: "",
     password: "",
-    isAdmin: "false",
+    isAdmin: false
   });
   
   const getData = (e) => {
@@ -40,7 +40,8 @@ const Login = ({ backend_url }) => {
   }, [formData])
   
   const changeRole = (e) => {
-    setrole(e.target.value);
+    let value = e.target.value === "true";
+    setrole(value);
     console.log(role);
   };
 
@@ -66,7 +67,7 @@ const Login = ({ backend_url }) => {
             name="isAdmin"
             value={false}
             onChange={changeRole}
-            checked={role == "false"}
+            checked={!role}
           />
           Student
           <input
@@ -74,7 +75,7 @@ const Login = ({ backend_url }) => {
             name="isAdmin"
             value={true}
             onChange={changeRole}
-            checked={role == "true"}
+            checked={role}
           />
           Admin
         </div>
