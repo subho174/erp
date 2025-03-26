@@ -50,7 +50,7 @@ const logInUser = asynHandler(async (req, res) => {
     return res
       .status(400)
       .json(new ApiResponse(400, "All details are required"));
-  const findUser = await User.findOne({ email });
+  const findUser = await User.findOne({ email,userName });
 
   if (!findUser)
     return res
