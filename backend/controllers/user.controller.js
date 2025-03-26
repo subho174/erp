@@ -47,7 +47,7 @@ const registerUser = asynHandler(async (req, res) => {
 const logInUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
   
-  if (!(userName, email || password || isAdmin))
+  if (!(userName || email || password || isAdmin))
     return res
       .status(400)
       .json(new ApiResponse(400, "All details are required"));

@@ -2,23 +2,20 @@ import { useEffect, useState, React } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = ({ backend_url }) => {
+const Login = ({ backend_url }) => {
   const [role, setrole] = useState("true");
   const navigate = useNavigate();
   const [formData, setformData] = useState({
     userName: "",
     email: "",
     password: "",
-    isAdmin: "false"
+    isAdmin: "false",
   });
   
   const getData = (e) => {
     e.preventDefault();
-    setformData((prev) => ({ ...prev, isAdmin: true }));
-    console.log(backend_url, formData);
-    
     axios
-      .post(`${backend_url}/user/register`, formData)
+      .post(`${backend_url}/user/login`, formData)
       .then(function (response) {
         console.log(response);
         let userDetails = [response.data.data];
@@ -81,13 +78,10 @@ const SignUp = ({ backend_url }) => {
           />
           Admin
         </div>
-
-        <button type="submit">Sign Up</button>
-
-        <p onClick = {() => navigate("/login")}>Already Have an account ?</p>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;
