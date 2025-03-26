@@ -46,11 +46,12 @@ const registerUser = asynHandler(async (req, res) => {
 
 const logInUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
+  
   if (!(userName, email || password || isAdmin))
     return res
       .status(400)
       .json(new ApiResponse(400, "All details are required"));
-  const findUser = await User.findOne({ userName, email });
+  const findUser = await User.findOne({ userName, email, isAdmin });
 
   if (!findUser)
     return res
@@ -62,8 +63,6 @@ const logInUser = asynHandler(async (req, res) => {
     return res
       .status(400)
       .json(new ApiResponse(400, undefined, "Password is wrong"));
-  // console.log(isPasswordValid);
-  // console.log(findUser, findUser._id);
 
   const { accessToken, refreshToken } = await generateToken(findUser._id);
 

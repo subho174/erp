@@ -11,7 +11,7 @@ const SignUp = ({ backend_url }) => {
     userName: "",
     email: "",
     password: "",
-    isAdmin: false,
+    isAdmin: "false",
   });
 
 //   const data = {
@@ -28,7 +28,7 @@ const SignUp = ({ backend_url }) => {
         console.log(response);
         let userDetails = [response.data.data];
         setuserData(userDetails);
-        if (userDetails[0].isAdmin == "true")
+        if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
       })
       .catch(function (error) {
