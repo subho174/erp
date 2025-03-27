@@ -9,14 +9,14 @@ const SignUp = ({ backend_url }) => {
     userName: "",
     email: "",
     password: "",
-    isAdmin: false
+    isAdmin: true,
   });
-  
-  const getData = (e) => {
+
+  const registerUser = (e) => {
     e.preventDefault();
     // setformData((prev) => ({ ...prev, isAdmin: true }));
     console.log(backend_url, formData);
-    
+
     axios
       .post(`${backend_url}/user/register`, formData)
       .then(function (response) {
@@ -24,8 +24,10 @@ const SignUp = ({ backend_url }) => {
         let userDetails = [response.data.data];
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
-
-        navigate("/dashboard/student", { state: { userData: userDetails[0] } })
+        else
+          navigate("/dashboard/student", {
+            state: { userData: userDetails[0] },
+          });
       })
       .catch(function (error) {
         console.log(error);
@@ -38,10 +40,10 @@ const SignUp = ({ backend_url }) => {
   };
   useEffect(() => {
     return () => {
-     console.log(formData);
-    }
-  }, [formData])
-  
+      console.log(formData);
+    };
+  }, [formData]);
+
   const changeRole = (e) => {
     let value = e.target.value === "true";
     setrole(value);
@@ -51,7 +53,7 @@ const SignUp = ({ backend_url }) => {
   return (
     <div className="signup">
       <header>Welcome to ERP</header>
-      <form onSubmit={getData} onChange={changeUserData}>
+      <form onSubmit={registerUser} onChange={changeUserData}>
         <div>
           <label htmlFor="name">Username</label>
           <input type="text" name="userName" />
@@ -85,7 +87,7 @@ const SignUp = ({ backend_url }) => {
 
         <button type="submit">Sign Up</button>
 
-        <p onClick = {() => navigate("/login")}>Already Have an account ?</p>
+        <p onClick={() => navigate("/login")}>Already Have an account ?</p>
       </form>
     </div>
   );

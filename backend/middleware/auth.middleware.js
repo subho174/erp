@@ -5,6 +5,8 @@ const User = require("../models/user.models");
 
 const verifyJWT = asynHandler(async (req, res, next) => {
   try {
+    console.log(req.header);
+    
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer", "");

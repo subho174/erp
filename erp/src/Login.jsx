@@ -1,4 +1,4 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, use } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,20 +9,24 @@ const Login = ({ backend_url }) => {
     userName: "",
     email: "",
     password: "",
-    isAdmin: false
+    isAdmin: true,
   });
-  
-  const getData = (e) => {
+
+  const logInUser = (e) => {
     e.preventDefault();
     axios
       .post(`${backend_url}/user/login`, formData)
       .then(function (response) {
         console.log(response);
         let userDetails = [response.data.data];
+        console.log(userDetails, userDetails[0].isAdmin);
+
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
-
-        navigate("/dashboard/student", { state: { userData: userDetails[0] } })
+        else
+          navigate("/dashboard/student", {
+            state: { userData: userDetails[0] },
+          });
       })
       .catch(function (error) {
         console.log(error);
@@ -35,10 +39,10 @@ const Login = ({ backend_url }) => {
   };
   useEffect(() => {
     return () => {
-     console.log(formData);
-    }
-  }, [formData])
-  
+      console.log(formData);
+    };
+  }, [formData]);
+
   const changeRole = (e) => {
     let value = e.target.value === "true";
     setrole(value);
@@ -48,7 +52,7 @@ const Login = ({ backend_url }) => {
   return (
     <div className="signup">
       <header>Welcome to ERP</header>
-      <form onSubmit={getData} onChange={changeUserData}>
+      <form onSubmit={logInUser} onChange={changeUserData}>
         <div>
           <label htmlFor="name">Username</label>
           <input type="text" name="userName" />
