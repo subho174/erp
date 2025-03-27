@@ -19,7 +19,7 @@ const AdminUtils = ({ backend_url }) => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+        "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
         "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
       },
     };
@@ -31,7 +31,7 @@ const AdminUtils = ({ backend_url }) => {
     formDataToSend.append("due_date", formData.due_date);
 
     axios
-      .post(`${backend_url}/user/upload-file`, formData)
+      .post(`${backend_url}/user/upload-file`, formData, config)
       .then(function (response) {
         console.log(response);
         let userDetails = [response.data.data];
