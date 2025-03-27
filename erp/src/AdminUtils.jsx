@@ -22,11 +22,11 @@ const AdminUtils = ({ backend_url }) => {
       },
     };
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("file", formData.file); // File input
-    formDataToSend.append("due_date", formData.due_date);
+    // const formDataToSend = new FormData();
+    // formDataToSend.append("title", formData.title);
+    // formDataToSend.append("description", formData.description);
+    // formDataToSend.append("file", formData.file); // File input
+    // formDataToSend.append("due_date", formData.due_date);
 
     axios
       .post(`${backend_url}/user/upload-file`, formData, config)
