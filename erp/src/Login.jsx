@@ -18,7 +18,8 @@ const Login = ({ backend_url }) => {
       .post(`${backend_url}/user/login`, formData)
       .then(function (response) {
         console.log(response);
-        let userDetails = [response.data.data];
+        localStorage.setItem("accessToken", response.data.data.accessToken);
+        let userDetails = [response.data.data.loggedInUser];
         console.log(userDetails, userDetails[0].isAdmin);
 
         if (userDetails[0].isAdmin == true)

@@ -8,12 +8,28 @@ const AdminUtils = ({ backend_url }) => {
     title: "",
     description: "",
     file: "",
-    due_date: ""
+    due_date: "",
   });
 
   const uploadFile = (e) => {
     e.preventDefault();
     console.log(formData);
+
+    const token = localStorage.getItem("accessToken"); // Retrieve the token from localStorage
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+        "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
+      },
+    };
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("file", formData.file); // File input
+    formDataToSend.append("due_date", formData.due_date);
+
     axios
       .post(`${backend_url}/user/upload-file`, formData)
       .then(function (response) {
@@ -34,8 +50,13 @@ const AdminUtils = ({ backend_url }) => {
   };
 
   const changeUserData = (e) => {
-    const { name, value } = e.target;
-    setformData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === "file")
+      setformData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      })); // Handle file input
+    else setformData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
