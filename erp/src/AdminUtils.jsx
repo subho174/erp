@@ -18,7 +18,7 @@ const AdminUtils = ({ backend_url }) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`, // Add the token to the Authorization header
-        "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
+        // "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
       },
     };
 
