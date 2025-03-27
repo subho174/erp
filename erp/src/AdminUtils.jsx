@@ -1,9 +1,7 @@
 import { React, useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminUtils = ({ backend_url }) => {
-  // const navigate = useNavigate();
   const [formData, setformData] = useState({
     title: "",
     description: "",
@@ -19,7 +17,7 @@ const AdminUtils = ({ backend_url }) => {
 
     const config = {
       headers: {
-        "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
+        Authorization: `Bearer ${token}`, // Add the token to the Authorization header
         "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
       },
     };
@@ -36,13 +34,6 @@ const AdminUtils = ({ backend_url }) => {
         console.log(response);
         let userDetails = [response.data.data];
         console.log(userDetails, userDetails[0].isAdmin);
-
-        // if (userDetails[0].isAdmin == true)
-        //   navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
-        // else
-        //   navigate("/dashboard/student", {
-        //     state: { userData: userDetails[0] },
-        //   });
       })
       .catch(function (error) {
         console.log(error);
@@ -55,7 +46,8 @@ const AdminUtils = ({ backend_url }) => {
       setformData((prev) => ({
         ...prev,
         [name]: files[0],
-      })); // Handle file input
+      }));
+    // Handle file input
     else setformData((prev) => ({ ...prev, [name]: value }));
   };
 
