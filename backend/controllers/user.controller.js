@@ -186,8 +186,8 @@ const postFeedback = asynHandler(async (req, res) => {
 });
 
 const getFeedbacks = asynHandler(async (req, res) => {
-  const { file_id } = req.body;
-  
+  const { file_id } = req.query;
+
   const existingFile = await File.findById(file_id);
   if (!existingFile)
     return res
