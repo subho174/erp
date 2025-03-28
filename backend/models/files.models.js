@@ -11,11 +11,17 @@ const fileSchema = new Schema(
     },
     due_date: {
       type: Date,
-      // required: true,
+      required: true,
     },
     file_url: {
-        type: String
-    }
+      type: String,
+    },
+    feedbacks: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Feedback",
+      },
+    ],
   },
   {
     timestamps: true,

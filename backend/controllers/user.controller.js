@@ -1,3 +1,5 @@
+const { default: mongoose } = require("mongoose");
+const Feedback = require("../models/feedback.models");
 const File = require("../models/files.models");
 const User = require("../models/user.models");
 const ApiError = require("../utils/ApiError");
@@ -154,4 +156,109 @@ const getAssignments = asynHandler(async (req, res) => {
     );
 });
 
-module.exports = { registerUser, logInUser, logOutUser, uploadFile, getAssignments };
+const postFeedback = asynHandler(async (req, res) => {
+  const { content, file_id } = req.body;
+  const existingFile = await File.findById(file_id);
+  if (!existingFile)
+    return res
+      .status(404)
+      .json(new ApiResponse(404, undefined, "assignment was not found"));
+
+  const feedback = await Feedback.create({
+    content,
+    owner: req.user._id,
+    assignment: file_id,
+  });
+
+  // start from here
+  // adding feedbacks in assignment collection
+  const addFeedbackInFile = await File.findByIdAndUpdate(
+    file_id,
+    {
+      $push: { feedbacks: feedback._id },
+    },
+    { new: true }
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, feedback, "feedback posted successfully"));
+});
+
+const getFeedbacks = asynHandler(async (req, res) => {
+  const { file_id } = req.body;
+  
+  const existingFile = await File.findById(file_id);
+  if (!existingFile)
+    return res
+      .status(404)
+      .json(new ApiResponse(404, undefined, "assignment was not found"));
+
+  const gettingFeedbackOwner = await File.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(file_id),
+      },
+    },
+    {
+      $lookup: {
+        from: "feedbacks",
+        localField: "feedbacks",
+        foreignField: "_id",
+        as: "feedbacks",
+        pipeline: [
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
+                {
+                  $project: {
+                    _id: 0,
+                    userName: 1,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $addFields: {
+              owner: {
+                $first: "$owner",
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              content: 1,
+              owner: 1,
+            },
+          },
+        ],
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        gettingFeedbackOwner[0].feedbacks,
+        "feedbacks fetched successfully"
+      )
+    );
+});
+
+module.exports = {
+  registerUser,
+  logInUser,
+  logOutUser,
+  uploadFile,
+  getAssignments,
+  postFeedback,
+  getFeedbacks,
+};
