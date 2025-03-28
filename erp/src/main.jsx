@@ -22,7 +22,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/" element={<App backend_url={backend_url} />} />
       <Route path="/login" element={<Login backend_url={backend_url} />} />
       <Route path="/dashboard/admin" element={<Admin backend_url={backend_url} />} />
-      <Route path="/dashboard/student" element={<Student />} />
+      <Route path="/dashboard/student" element={<Student backend_url={backend_url} />} />
     </Routes>
   </BrowserRouter>
 );

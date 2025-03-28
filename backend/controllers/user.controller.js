@@ -89,7 +89,13 @@ const logInUser = asynHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, {loggedInUser, accessToken}, "User logged in successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { loggedInUser, accessToken },
+        "User logged in successfully"
+      )
+    );
 });
 
 const logOutUser = asynHandler(async (req, res) => {
@@ -111,8 +117,11 @@ const logOutUser = asynHandler(async (req, res) => {
 
 const uploadFile = asynHandler(async (req, res) => {
   const { title, description, due_date } = req.body;
-  if (!(title && description)) // add due_date part here also later on, since it is necessary
-    return res.status(400).json(new ApiError(400, undefined, "All details are required"));
+  if (!(title && description))
+    // add due_date part here also later on, since it is necessary
+    return res
+      .status(400)
+      .json(new ApiError(400, undefined, "All details are required"));
 
   const fileLocalPath = req.file?.path;
   if (!fileLocalPath) throw new ApiError(404, "file not found");
@@ -134,4 +143,15 @@ const uploadFile = asynHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, uploadedFile, "file uploaded successfully"));
 });
-module.exports = { registerUser, logInUser, logOutUser, uploadFile };
+
+const getAssignments = asynHandler(async (req, res) => {
+  const assignments = await File.find({});
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, assignments, "assignments fetched successfully")
+    );
+});
+
+module.exports = { registerUser, logInUser, logOutUser, uploadFile, getAssignments };
