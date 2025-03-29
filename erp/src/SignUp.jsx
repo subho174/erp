@@ -33,6 +33,7 @@ const SignUp = ({ backend_url }) => {
       .catch(function (error) {
         setisLoading(false);
         toast.error("Failed to Sign In");
+        toast.error(error.response.data.message);
         console.log(error);
       });
   };

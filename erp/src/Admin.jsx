@@ -2,12 +2,12 @@ import { React, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import AdminUtils from "./AdminUtils";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Admin = ({ backend_url }) => {
   const location = useLocation();
   const { userData } = location.state || {};
   console.log(userData);
-
   const token = localStorage.getItem("accessToken");
 
   const config = {
@@ -50,6 +50,7 @@ const Admin = ({ backend_url }) => {
 export default Admin;
 
 const Assignments = ({ backend_url, assignments }) => {
+  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
   const config = {
@@ -58,11 +59,12 @@ const Assignments = ({ backend_url, assignments }) => {
     },
   };
 
-  const getFeedback = (file_id) => {
+  const getFeedback = (file_title,file_id) => {
     axios
       .get(`${backend_url}/user/get-feedback/?file_id=${file_id}`, config) // in get requests, second argument is reserved for config, no other parameter should be passed
       .then((res) => {
         console.log(res);
+        navigate(`/dashboard/admin/feedbacks/${file_title}`, { state: {feedbacks: res.data.data}});
       })
       .catch((e) => {
         console.log(e);
@@ -96,11 +98,16 @@ const Assignments = ({ backend_url, assignments }) => {
         }
       };
       return (
-        <div className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col gap-[1rem] items-center" key={i}>
+        <div
+          className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col gap-[1rem] items-center"
+          key={i}
+        >
           <div>{file.title}</div>
           <div>{file.description}</div>
           <div>{<FileType />}</div>
-          <button onClick={() => getFeedback(file._id)} className="text-white">Show Feedbacks</button>
+          <button onClick={() => getFeedback(file.title,file._id)} className="text-white">
+            Show Feedbacks
+          </button>
         </div>
       );
     })

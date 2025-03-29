@@ -119,7 +119,7 @@ const logOutUser = asynHandler(async (req, res) => {
 
 const uploadFile = asynHandler(async (req, res) => {
   const { title, description, due_date } = req.body;
-  if (!(title && description))
+  if (!(title && description && due_date))
     // add due_date part here also later on, since it is necessary
     return res
       .status(400)

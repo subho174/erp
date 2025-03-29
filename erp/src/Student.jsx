@@ -85,12 +85,12 @@ const Assignments = ({ files, backend_url }) => {
       .post(`${backend_url}/user/post-feedback`, feedbackData, config)
       .then((res) => {
         // setisLoading(false);
-        toast.success("Feedback posted successfully")
+        toast.success("Feedback posted successfully");
         console.log(res);
       })
       .catch((e) => {
         // setisLoading(false);
-        toast.error("Failed to post feedback")
+        toast.error("Failed to post feedback");
         console.log(e);
       });
   };
@@ -98,6 +98,9 @@ const Assignments = ({ files, backend_url }) => {
   return files ? (
     files.map((file, i) => {
       let type = file.file_url;
+      let due_date = file.due_date;
+      console.log(due_date?.replace("T00:00:00.000Z", ""));
+
       const FileType = () => {
         if (type.endsWith(".pdf")) {
           return (
@@ -123,25 +126,30 @@ const Assignments = ({ files, backend_url }) => {
       };
       return (
         <div
-          className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col gap-[1rem] items-center"
+          className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col justify-between items-center"
           key={i}
         >
-          <div>
-            {/* <label htmlFor="">Title:</label> */}
-            {file.title}
+          <div className="mb-4">
+            <p>{file.title}</p>
+            <p>{file.description}</p>
           </div>
-          <div>
-            {/* <label htmlFor="">Description:</label> */}
-            {file.description}
+          <div className="h-[200px] justify-items-center content-center">{<FileType />}</div>
+          <div className="flex gap-2 text-[1.25rem] m-[1rem_0]">
+            <p className="font-bold">Deadline : </p>
+            <p>{due_date?.replace("T00:00:00.000Z", "")}</p>
           </div>
-          <div>{<FileType />}</div>
           <div>
             <h5>Feedback form</h5>
             <form
               onChange={(e) => changeFeedback(e, file._id)}
               onSubmit={(event) => shareFeedback(event, file._id)}
             >
-              <input type="text" className="border-2 w-[100%]" name="content" required />
+              <input
+                type="text"
+                className="border-2 w-[100%]"
+                name="content"
+                required
+              />
               <button type="submit" className="text-white">
                 Share feedback
               </button>
