@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import AdminUtils from "./AdminUtils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Admin = ({ backend_url }) => {
   const location = useLocation();
@@ -17,7 +18,7 @@ const Admin = ({ backend_url }) => {
   };
 
   const [assignments, setassignments] = useState();
-
+// const [showDashboard, setshowDashboard] = useState(false)
   useEffect(() => {
     axios
       .get(`${backend_url}/user/get-assignments`, config)
@@ -32,24 +33,27 @@ const Admin = ({ backend_url }) => {
   console.log(assignments);
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <h1 className="text-[2.5rem] m-[1rem_0] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
-      {/* <p>{userData.email}</p> */}
-      <AdminUtils backend_url={backend_url} />
+    <>
+      <Navbar isLoggedIn={true} />
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="text-[2.5rem] m-[1rem_0] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
+        {/* <p>{userData.email}</p> */}
+        <AdminUtils backend_url={backend_url} />
 
-      <h1 className="text-[2.5rem] m-[3rem_0] font-bold text-center">
-        Old posts
-      </h1>
-      <div className="w-[85%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[2.5rem]">
-        <Assignments backend_url={backend_url} assignments={assignments} />
+        <h1 className="text-[2.5rem] m-[3rem_0] font-bold text-center">
+          Old posts
+        </h1>
+        <div className="w-[85%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[2.5rem]">
+          <Assignments backend_url={backend_url} assignments={assignments} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export default Admin;
 
-const Assignments = ({ backend_url, assignments }) => {
+const Assignments = ({ backend_url, assignments,  }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
 
@@ -59,12 +63,15 @@ const Assignments = ({ backend_url, assignments }) => {
     },
   };
 
-  const getFeedback = (file_title,file_id) => {
+  const getFeedback = (file_title, file_id) => {
     axios
       .get(`${backend_url}/user/get-feedback/?file_id=${file_id}`, config) // in get requests, second argument is reserved for config, no other parameter should be passed
       .then((res) => {
+        // setshowDashboard(true)
         console.log(res);
-        navigate(`/dashboard/admin/feedbacks/${file_title}`, { state: {feedbacks: res.data.data}});
+        navigate(`/dashboard/admin/feedbacks/${file_title}`, {
+          state: { feedbacks: res.data.data },
+        });
       })
       .catch((e) => {
         console.log(e);
@@ -102,10 +109,17 @@ const Assignments = ({ backend_url, assignments }) => {
           className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col gap-[1rem] items-center"
           key={i}
         >
-          <div>{file.title}</div>
-          <div>{file.description}</div>
-          <div>{<FileType />}</div>
-          <button onClick={() => getFeedback(file.title,file._id)} className="text-white">
+          {/* <div>{file.title}</div>
+          <div>{file.description}</div> */}
+          <div className="mb-4">
+            <p>{file.title}</p>
+            <p>{file.description}</p>
+          </div>
+          <div className="h-[200px] justify-items-center content-center">{<FileType />}</div>
+          <button
+            onClick={() => getFeedback(file.title, file._id)}
+            className="text-white"
+          >
             Show Feedbacks
           </button>
         </div>

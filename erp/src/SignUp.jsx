@@ -23,6 +23,7 @@ const SignUp = ({ backend_url }) => {
         setisLoading(false);
         let userDetails = [response.data.data];
         toast.success("Signed Up successfully");
+        
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
         else
@@ -32,7 +33,7 @@ const SignUp = ({ backend_url }) => {
       })
       .catch(function (error) {
         setisLoading(false);
-        toast.error("Failed to Sign In");
+        toast.error("Failed to Sign Up");
         toast.error(error.response.data.message);
         console.log(error);
       });
@@ -54,7 +55,7 @@ const SignUp = ({ backend_url }) => {
   };
 
   return (
-    <div className="signup w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[20vh] text-white bg-[#242424] flex flex-col justify-center items-center rounded-[0.75rem] ">
+    <div className="signup w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[20vh] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem] ">
       <ToastContainer
         position="top-center"
         autoClose={3000}

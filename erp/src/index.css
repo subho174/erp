@@ -5,7 +5,7 @@
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* background-color: #242424; */
+  /* background-color: #0f172a; */
 }
 *{
   box-sizing: border-box;
@@ -20,7 +20,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  /* background-color: #1a1a1a; */
+  background-color: #0f172a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -41,6 +42,9 @@ button:focus-visible {
   }
   input{
     @apply rounded-[0.25rem] outline-none p-[0.25rem_0.5rem] text-black bg-white m-[0.75rem_0] focus:border-[#646cff] focus:border-[3px]
+  }
+  li{
+    @apply text-[1.15rem] cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.25rem]
   }
   /* .s{
     @apply border-2

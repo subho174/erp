@@ -61,7 +61,7 @@ const AdminUtils = ({ backend_url }) => {
   const [isLoading, setisLoading] = useState(false);
 
   return (
-    <div className="w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[3vh] text-white bg-[#242424] rounded-[0.75rem]">
+    <div className="w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[3vh] text-white bg-[#0f172a] rounded-[0.75rem]">
       <ToastContainer
         position="top-center"
         autoClose={3000}

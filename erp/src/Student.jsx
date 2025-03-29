@@ -2,14 +2,15 @@ import axios from "axios";
 import { useEffect, useState, React } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Navbar from "./Navbar";
 
 const Student = ({ backend_url }) => {
   const location = useLocation();
-  const { userData } = location.state || {};
+  const { userData, isLoggedIn } = location.state || {};
   const token = localStorage.getItem("accessToken"); // Retrieve the token from localStorage
   const [files, setfiles] = useState([]);
 
-  console.log(userData);
+  console.log(userData,isLoggedIn);
 
   const config = {
     headers: {
@@ -40,6 +41,7 @@ const Student = ({ backend_url }) => {
         pauseOnHover
         theme="dark"
       />
+      <Navbar isLoggedIn={true} />
       <h1 className="text-[2.5rem] mb-[2rem] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
       <div className="">
         <h4 className="text-[1.75rem] text-center">Pending assignments</h4>
