@@ -25,14 +25,15 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
+button:hover,li:hover {
   border-color: #646cff;
+  background-color: white;
+  color: black;
 }
-button:focus,
+/* button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
+  /* outline: 4px auto -webkit-focus-ring-color; */
+  
 @layer components{
   .labels{
     @apply flex flex-col
@@ -44,7 +45,10 @@ button:focus-visible {
     @apply rounded-[0.25rem] outline-none p-[0.25rem_0.5rem] text-black bg-white m-[0.75rem_0] focus:border-[#646cff] focus:border-[3px]
   }
   li{
-    @apply text-[1.15rem] cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.25rem]
+    @apply text-[1.15rem] border-2 cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.35rem] transform hover:border-[#646cff] hover:translate-y-2 duration-400
+  }
+  .profile_label{
+    @apply text-[1.15rem] font-bold 
   }
   /* .s{
     @apply border-2

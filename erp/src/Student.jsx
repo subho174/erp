@@ -10,13 +10,15 @@ const Student = ({ backend_url }) => {
   const token = localStorage.getItem("accessToken"); // Retrieve the token from localStorage
   const [files, setfiles] = useState([]);
 
-  console.log(userData,isLoggedIn);
+  console.log(userData, isLoggedIn);
 
   const config = {
     headers: {
       Authorization: `Bearer ${token}`, // Add the token to the Authorization header
     },
   };
+
+  const [profileDetails, setprofileDetails] = useState();
 
   useEffect(() => {
     axios
@@ -26,6 +28,16 @@ const Student = ({ backend_url }) => {
       })
       .catch((e) => {
         console.log(e);
+      });
+
+    axios
+      .get(`${backend_url}/user/get-user`, config)
+      .then((res) => {
+        console.log(res);
+        setprofileDetails(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
   console.log(files);
@@ -41,11 +53,11 @@ const Student = ({ backend_url }) => {
         pauseOnHover
         theme="dark"
       />
-      <Navbar isLoggedIn={true} />
+      <Navbar isLoggedIn={true} profileDetails={profileDetails} />
       <h1 className="text-[2.5rem] mb-[2rem] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
-      <div className="">
+      <div className="z-0">
         <h4 className="text-[1.75rem] text-center">Pending assignments</h4>
-        <div className="w-[85%] mt-[3rem] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[2.5rem]">
+        <div className="w-[85%] mt-[3rem] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem]">
           <Assignments files={files} backend_url={backend_url} />
         </div>
       </div>
@@ -128,14 +140,16 @@ const Assignments = ({ files, backend_url }) => {
       };
       return (
         <div
-          className="border-2 border-s-black rounded-[0.5rem] p-[1rem] flex flex-col justify-between items-center"
+          className="rounded-[0.5rem] p-[1rem] flex flex-col justify-between items-center transform hover:-translate-y-4 duration-400 shadow-2xl"
           key={i}
         >
           <div className="mb-4">
             <p>{file.title}</p>
             <p>{file.description}</p>
           </div>
-          <div className="h-[200px] justify-items-center content-center">{<FileType />}</div>
+          <div className="h-[200px] justify-items-center content-center">
+            {<FileType />}
+          </div>
           <div className="flex gap-2 text-[1.25rem] m-[1rem_0]">
             <p className="font-bold">Deadline : </p>
             <p>{due_date?.replace("T00:00:00.000Z", "")}</p>

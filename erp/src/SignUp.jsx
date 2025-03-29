@@ -55,7 +55,7 @@ const SignUp = ({ backend_url }) => {
   };
 
   return (
-    <div className="signup w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[20vh] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem] ">
+    <div className="signup w-[90vw] md:w-[60vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem] ">
       <ToastContainer
         position="top-center"
         autoClose={3000}
