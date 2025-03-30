@@ -13,6 +13,9 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
+    profileImage: {
+      type: String,
+    },
     password: {
       type: String,
       required: true,
@@ -22,8 +25,8 @@ const userSchema = new Schema(
       required: true,
     },
     refreshToken: {
-      type: String
-    }
+      type: String,
+    },
   },
   {
     timestamps: true,

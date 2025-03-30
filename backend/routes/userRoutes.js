@@ -13,7 +13,7 @@ const verifyJWT = require("../middleware/auth.middleware.js");
 const upload = require("../middleware/multer.middleware.js");
 
 const userRouter = express.Router();
-userRouter.post("/register", registerUser);
+userRouter.post("/register", upload.single("profileImage"), registerUser);
 userRouter.post("/login", logInUser);
 userRouter.post("/logout", verifyJWT, logOutUser);
 userRouter.get("/get-user", verifyJWT, getUser);

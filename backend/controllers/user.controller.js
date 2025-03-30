@@ -23,7 +23,6 @@ const generateToken = async (userId) => {
 };
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
-  console.log(req.body);
 
   if (!(userName || email || password || isAdmin))
     return res
@@ -43,11 +42,32 @@ const registerUser = asynHandler(async (req, res) => {
       .status(400)
       .json(new ApiResponse(400, undefined, "User already exists"));
   // return new ApiError(400, "User already exists")
+
+  const profileImageLocalFilePath = req.file?.path;
+  if (!profileImageLocalFilePath)
+    return res
+      .status(404)
+      .json(new ApiError(404, undefined, "Profile image not found"));
+
+  const profileImage = await uploadOnCloudinary(profileImageLocalFilePath);
+
+  if (!profileImage)
+    return res
+      .status(404)
+      .json(
+        new ApiError(
+          404,
+          undefined,
+          "failed to upload profile image on cloudinary"
+        )
+      );
+
   const creatingUser = await User.create({
     userName,
     email,
     password,
     isAdmin,
+    profileImage: profileImage?.url,
   });
 
   const newUser = await User.findById(creatingUser._id).select("-password");
