@@ -56,7 +56,7 @@ console.log(profileDetails, backend_url);
         <h1 className="text-[2.5rem] m-[3rem_0] font-bold text-center">
           Old posts
         </h1>
-        <div className="w-[85%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem]">
+        <div className="w-[85%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem] mb-[4rem]">
           <Assignments backend_url={backend_url} assignments={assignments} />
         </div>
       </div>

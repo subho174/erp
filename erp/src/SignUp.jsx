@@ -23,9 +23,10 @@ const SignUp = ({ backend_url }) => {
       .post(`${backend_url}/user/register`, formData)
       .then(function (response) {
         setisLoading(false);
-        let userDetails = [response.data.data];
-        toast.success("Signed Up successfully");
+        let userDetails = [response.data.data.newUser];
+        // toast.success("Signed Up successfully");
         console.log(userDetails);
+        localStorage.setItem("accessToken", response.data.data.accessToken);
         setprofileDetails(userDetails[0]);
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
