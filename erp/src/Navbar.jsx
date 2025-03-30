@@ -15,7 +15,8 @@ const Navbar = ({ isLoggedIn, role, profileDetails }) => {
   };
 
   const [profile, setprofile] = useState(false);
-console.log(profileDetails);
+// console.log(profileDetails);
+// const [profileDetails, setprofileDetails] = useState();
 
   const logOut = () => {
     // const backend_url = import.meta.env.VITE_BACKEND_URL;
@@ -35,19 +36,22 @@ console.log(profileDetails);
 
   const showProfile = () => {
     setprofile(true);
+    // this code was commented out initially 
+    // trying to fetch user details to show in his profile
     // axios
     //   .get(`${backend_url}/user/get-user`, config)
     //   .then((res) => {
     //     console.log(res);
-    //     profileDetails = res.data.data;
+    //     setprofileDetails(res.data.data);
     //   })
     //   .catch((error) => {
     //     console.log(error);
     //   });
   };
+console.log(profileDetails);
 
   return (
-    <div>
+    <div className="w-[100%]">
       <ToastContainer
         position="top-center"
         autoClose={3000}

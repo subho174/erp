@@ -8,8 +8,8 @@ function App({backend_url}) {
 
   return (
     <>
-    <Navbar />
-    <div className="flex justify-center">
+    {/* <Navbar /> */}
+    <div className="justify-items-center content-center">
       <SignUp backend_url={backend_url} />
     </div>
     </>

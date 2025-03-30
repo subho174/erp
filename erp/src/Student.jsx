@@ -183,6 +183,6 @@ const Assignments = ({ files, backend_url }) => {
       );
     })
   ) : (
-    <p>No assignmaents available</p>
+    <p>No Assignments available</p>
   );
 };

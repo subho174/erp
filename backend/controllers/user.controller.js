@@ -53,7 +53,13 @@ const registerUser = asynHandler(async (req, res) => {
   const newUser = await User.findById(creatingUser._id).select("-password");
   res
     .status(200)
-    .json(new ApiResponse(200, newUser, "User registered successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { newUser, accessToken },
+        "User registered successfully"
+      )
+    );
 });
 
 const logInUser = asynHandler(async (req, res) => {

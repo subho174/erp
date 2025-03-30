@@ -43,6 +43,7 @@ const [profileDetails, setprofileDetails] = useState(false);
       });
   }, []);
   console.log(assignments);
+console.log(profileDetails, backend_url);
 
   return (
     <>
