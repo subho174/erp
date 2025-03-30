@@ -10,13 +10,13 @@ const AdminUtils = () => {
     file: "",
     due_date: "",
   });
-  let { token, backend_url } = useContext(ProfileContext);
+  let { backend_url } = useContext(ProfileContext);
   const uploadFile = (e) => {
     e.preventDefault();
     setisLoading(true);
     toast.info("Assignment is being posted");
     //console.log(formData);
-
+    const token = localStorage.getItem("accessToken");
     const config = {
       headers: {
         Authorization: `Bearer ${token}`, // Add the token to the Authorization header

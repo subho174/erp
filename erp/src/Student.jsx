@@ -8,10 +8,15 @@ import ProfileContext from "./ProfileContext";
 const Student = () => {
   const location = useLocation();
   const { userData } = location.state || {};
-  let { fetchUser, backend_url, config } = useContext(ProfileContext);
+  let { fetchUser, backend_url } = useContext(ProfileContext);
 
   const [files, setfiles] = useState([]);
-
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   // console.log(userData, isLoggedIn);
 
   useEffect(() => {
@@ -58,8 +63,13 @@ const Assignments = ({ files }) => {
     content: "",
     file_id: "",
   });
-  let { config, backend_url } = useContext(ProfileContext);
-
+  let { backend_url } = useContext(ProfileContext);
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   // const [isLoading, setisLoading] = useState(false);
   const changeFeedback = (e, id) => {
     const { value } = e.target;

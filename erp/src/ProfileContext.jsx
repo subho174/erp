@@ -4,17 +4,16 @@ import { createContext, useState } from "react";
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
-  const [profileData, setprofileData] = useState("hello");
+  const [profileData, setprofileData] = useState();
   const backend_url = import.meta.env.VITE_BACKEND_URL;
 
-  const token = localStorage.getItem("accessToken");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
   const fetchUser = () => {
+    const token = localStorage.getItem("accessToken");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     axios
       .get(`${backend_url}/user/get-user`, config)
       .then((res) => {
@@ -25,6 +24,7 @@ export const ProfileProvider = ({ children }) => {
         console.log(error);
       });
   };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -32,8 +32,6 @@ export const ProfileProvider = ({ children }) => {
         setprofileData,
         fetchUser,
         backend_url,
-        token,
-        config,
       }}
     >
       {children}

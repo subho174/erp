@@ -6,18 +6,24 @@ import ProfileContext from "./ProfileContext";
 
 const Navbar = ({ isLoggedIn }) => {
   const navigate = useNavigate();
-  let { profileData, backend_url, config } = useContext(ProfileContext);
-
+  let { profileData, setprofileData, backend_url } = useContext(ProfileContext);
+  // console.log(profileData);
   const [profile, setprofile] = useState(false);
 
   const logOut = () => {
     toast.info("Logging Out");
-
+    const token = localStorage.getItem("accessToken");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     axios
       .post(`${backend_url}/user/logout`, {}, config)
       .then((res) => {
         console.log(res);
         localStorage.removeItem("accessToken");
+        setprofileData(null);
         navigate("/");
       })
       .catch((error) => {
@@ -55,7 +61,7 @@ const Navbar = ({ isLoggedIn }) => {
         </ul>
       </nav>
       <div
-        className={`fixed top-0 right-0 w-[100%] md:w-[50%]  lg:w-[35%] xl:w-[25%] h-full bg-white shadow-lg p-[3rem_2rem] transform transition-transform duration-500 ease-in-out z-20 ${
+        className={`fixed top-0 right-0 w-[100%] md:w-[50%] lg:w-[40%] xl:w-[25%] h-full bg-white shadow-lg p-[3rem_2rem] transform transition-transform duration-500 ease-in-out z-20 ${
           profile ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -67,7 +73,7 @@ const Navbar = ({ isLoggedIn }) => {
         {profileData ? (
           <div className="flex justify-between pr-[1.5rem]">
             <img
-              className="rounded-[50%]"
+              className="rounded-[50%] border-2 border-[grey]"
               src={
                 profileData.profileImage
                   ? `${profileData.profileImage}`

@@ -12,8 +12,13 @@ const Admin = () => {
   const { userData } = location.state || {};
   //console.log(userData);
 
-  let { fetchUser, backend_url, config } = useContext(ProfileContext);
-
+  let { fetchUser, backend_url } = useContext(ProfileContext);
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [assignments, setassignments] = useState();
   useEffect(() => {
     axios
@@ -51,7 +56,13 @@ export default Admin;
 
 const Assignments = ({ assignments }) => {
   const navigate = useNavigate();
-  let { config, backend_url } = useContext(ProfileContext);
+  let { backend_url } = useContext(ProfileContext);
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const getFeedback = (file_title, file_id) => {
     toast.info("Loading Feedbacks..");

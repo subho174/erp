@@ -6,7 +6,7 @@ const Feedback = () => {
   const location = useLocation();
   const { feedbacks } = location.state || {};
   // console.log(feedbacks);
-  
+
   return (
     <>
       <Navbar isLoggedIn={true} />
