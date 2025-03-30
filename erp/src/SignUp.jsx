@@ -14,13 +14,22 @@ const SignUp = ({ backend_url }) => {
     email: "",
     password: "",
     isAdmin: true,
+    profileImage: "",
   });
+
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
+    },
+  };
 
   const registerUser = (e) => {
     e.preventDefault();
     setisLoading(true);
     axios
-      .post(`${backend_url}/user/register`, formData)
+      .post(`${backend_url}/user/register`, formData, config)
+      // axios
+      //   .post(`http://localhost:9000/user/register`, formData, config)
       .then(function (response) {
         setisLoading(false);
         let userDetails = [response.data.data.newUser];
@@ -38,7 +47,7 @@ const SignUp = ({ backend_url }) => {
       .catch(function (error) {
         setisLoading(false);
         toast.error("Failed to Sign Up");
-        toast.error(error.response.data.message);
+        // toast.error(error.response.data.message);
         console.log(error);
       });
   };
@@ -49,8 +58,13 @@ const SignUp = ({ backend_url }) => {
   }, [formData]);
 
   const changeUserData = (e) => {
-    const { name, value } = e.target;
-    setformData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+    if (name === "profileImage")
+      setformData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
+    else setformData((prev) => ({ ...prev, [name]: value }));
   };
 
   const changeRole = (e) => {
@@ -90,6 +104,10 @@ const SignUp = ({ backend_url }) => {
             <label htmlFor="name">Password</label>
             <input type="password" name="password" required />
           </div>
+          <div>
+            <label htmlFor="profileImage">Profile Pic</label>
+            <input type="file" accept="image/*" name="profileImage" />
+          </div>
           <div className="flex justify-evenly mt-[10px]">
             <div>
               <input
@@ -119,9 +137,9 @@ const SignUp = ({ backend_url }) => {
               Sign Up
             </button>
             {isLoading ? (
-              <span class="relative flex size-3">
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                <span class="relative inline-flex size-3 rounded-full bg-sky-500"></span>
+              <span className="relative flex size-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
               </span>
             ) : (
               ""

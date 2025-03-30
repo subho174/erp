@@ -90,6 +90,7 @@ console.log(profileDetails);
         ></i>
         {profileDetails ? (
           <div>
+            <img className="rounded-[50%]" src={profileDetails.profileImage ? `${profileDetails.profileImage}` : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxs6nU-MXcXqn0H_RzPhyk9tBajU71PWi3P3_yCaO9ZaeqSyhl1FJ4hBRNx-Bm1hhSU8c&usqp=CAU"} style={{height: "100px", width: "100px"}} alt="Profile Photo" />
             <label htmlFor="" className="profile_label">
               Name
             </label>
