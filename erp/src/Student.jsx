@@ -1,24 +1,18 @@
 import axios from "axios";
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
+import ProfileContext from "./ProfileContext";
 
-const Student = ({ backend_url }) => {
+const Student = () => {
   const location = useLocation();
-  const { userData, isLoggedIn } = location.state || {};
-  const token = localStorage.getItem("accessToken"); // Retrieve the token from localStorage
+  const { userData } = location.state || {};
+  let { fetchUser, backend_url, config } = useContext(ProfileContext);
+
   const [files, setfiles] = useState([]);
 
-  console.log(userData, isLoggedIn);
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
-    },
-  };
-
-  const [profileDetails, setprofileDetails] = useState();
+  // console.log(userData, isLoggedIn);
 
   useEffect(() => {
     axios
@@ -30,17 +24,9 @@ const Student = ({ backend_url }) => {
         console.log(e);
       });
 
-    axios
-      .get(`${backend_url}/user/get-user`, config)
-      .then((res) => {
-        console.log(res);
-        setprofileDetails(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetchUser();
   }, []);
-  console.log(files);
+  // console.log(files);
 
   return (
     <div>
@@ -53,32 +39,32 @@ const Student = ({ backend_url }) => {
         pauseOnHover
         theme="dark"
       />
-      <Navbar isLoggedIn={true} profileDetails={profileDetails} />
-      <h1 className="text-[2.5rem] mb-[2rem] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
+      <Navbar isLoggedIn={true} />
+      <h1 className="text-[2.5rem] w-[80%] mx-auto my-[1rem] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
       <div className="z-0">
-        <h4 className="text-[1.75rem] text-center">Pending assignments</h4>
-        <div className="w-[85%] mt-[3rem] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem]">
-          <Assignments files={files} backend_url={backend_url} />
+        <h4 className="text-[2rem] text-center mt-10">Pending assignments</h4>
+        <div className="w-[85%] m-[2rem] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem]">
+          <Assignments files={files} />
         </div>
       </div>
-      {/* <p>{userData.userName}</p>
-      <p>{userData.email}</p> */}
     </div>
   );
 };
 
 export default Student;
 
-const Assignments = ({ files, backend_url }) => {
+const Assignments = ({ files }) => {
   const [feedbackData, setfeedbackData] = useState({
     content: "",
     file_id: "",
   });
+  let { config, backend_url } = useContext(ProfileContext);
+
   // const [isLoading, setisLoading] = useState(false);
   const changeFeedback = (e, id) => {
     const { value } = e.target;
     setfeedbackData((prev) => ({ ...prev, content: value, file_id: id }));
-    console.log(feedbackData);
+    // console.log(feedbackData);
   };
 
   const shareFeedback = (event, id) => {
@@ -86,14 +72,6 @@ const Assignments = ({ files, backend_url }) => {
     toast.info("Feedback is being posted");
     // setisLoading(true);
     // setfeedbackData((prev) => ({ ...prev, file_id: id }))
-
-    const token = localStorage.getItem("accessToken");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    console.log(feedbackData);
 
     axios
       .post(`${backend_url}/user/post-feedback`, feedbackData, config)
@@ -113,7 +91,7 @@ const Assignments = ({ files, backend_url }) => {
     files.map((file, i) => {
       let type = file.file_url;
       let due_date = file.due_date;
-      console.log(due_date?.replace("T00:00:00.000Z", ""));
+      // console.log(due_date?.replace("T00:00:00.000Z", ""));
 
       const FileType = () => {
         if (type.endsWith(".pdf")) {
@@ -166,17 +144,9 @@ const Assignments = ({ files, backend_url }) => {
                 name="content"
                 required
               />
-              <button type="submit" className="text-white">
+              <button type="submit" className="text-white my-4">
                 Share feedback
               </button>
-              {/* {isLoading ? (
-                <span class="relative flex size-3">
-                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                  <span class="relative inline-flex size-3 rounded-full bg-sky-500"></span>
-                </span>
-              ) : (
-                ""
-              )} */}
             </form>
           </div>
         </div>

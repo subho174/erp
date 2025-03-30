@@ -1,11 +1,14 @@
-import { useEffect, useState, React, use } from "react";
+import { useEffect, useState, React, use, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
+import ProfileContext from "./ProfileContext";
 
-const Login = ({ backend_url }) => {
+const Login = () => {
   const [role, setrole] = useState(true);
+  let { backend_url } = useContext(ProfileContext);
+
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
   const [formData, setformData] = useState({
@@ -18,13 +21,14 @@ const Login = ({ backend_url }) => {
   const logInUser = (e) => {
     e.preventDefault();
     setisLoading(true);
+    toast.info("Logging in..");
     axios
       .post(`${backend_url}/user/login`, formData)
       .then(function (response) {
         setisLoading(false);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         let userDetails = [response.data.data.loggedInUser];
-        console.log(userDetails, userDetails[0].isAdmin);
+        //console.log(userDetails, userDetails[0].isAdmin);
         toast.success("Logged In successfully");
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
@@ -45,21 +49,20 @@ const Login = ({ backend_url }) => {
     const { name, value } = e.target;
     setformData((prev) => ({ ...prev, [name]: value }));
   };
-  useEffect(() => {
-    return () => {
-      console.log(formData);
-    };
-  }, [formData]);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log(formData);
+  //   };
+  // }, [formData]);
 
   const changeRole = (e) => {
     let value = e.target.value === "true";
     setrole(value);
-    console.log(role);
   };
 
   return (
     <>
-      <Navbar isLoggedIn={false}/>
+      <Navbar isLoggedIn={false} />
       <div className="flex justify-center">
         <div className="signup w-[90vw] md:w-[60vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem]">
           <ToastContainer

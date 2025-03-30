@@ -1,22 +1,21 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import ProfileContext from "./ProfileContext";
 
-const AdminUtils = ({ backend_url }) => {
+const AdminUtils = () => {
   const [formData, setformData] = useState({
     title: "",
     description: "",
     file: "",
     due_date: "",
   });
-
+  let { token, backend_url } = useContext(ProfileContext);
   const uploadFile = (e) => {
     e.preventDefault();
     setisLoading(true);
-    // toast.info("Assignment is being posted")
-    console.log(formData);
-
-    const token = localStorage.getItem("accessToken"); // Retrieve the token from localStorage
+    toast.info("Assignment is being posted");
+    //console.log(formData);
 
     const config = {
       headers: {
@@ -37,8 +36,8 @@ const AdminUtils = ({ backend_url }) => {
         setisLoading(false);
         toast.success("Assignment posted successfully");
         console.log(response);
-        let userDetails = [response.data.data];
-        console.log(userDetails, userDetails[0].isAdmin);
+        // let userDetails = [response.data.data];
+        // console.log(userDetails, userDetails[0].isAdmin);
       })
       .catch(function (error) {
         setisLoading(false);
@@ -94,7 +93,7 @@ const AdminUtils = ({ backend_url }) => {
           <input type="date" name="due_date" required />
         </div>
         <div className="flex flex-col items-center gap-[1rem] mt-[1.5rem] ">
-          <button >Post Assignment</button>
+          <button>Post Assignment</button>
           {isLoading ? (
             <span class="relative flex size-3">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>

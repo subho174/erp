@@ -1,16 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import SignUp from "./SignUp";
-import Navbar from "./Navbar";
+import ProfileContext from "./ProfileContext";
 
-function App({backend_url}) {
-  // const backend_url = import.meta.env.VITE_BACKEND_URL;
-
+function App() {
   return (
     <>
-    {/* <Navbar /> */}
     <div className="justify-items-center content-center">
-      <SignUp backend_url={backend_url} />
+      <SignUp />
     </div>
     </>
   );

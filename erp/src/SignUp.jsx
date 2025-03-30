@@ -1,14 +1,14 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState, React, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
+import ProfileContext from "./ProfileContext";
 
-const SignUp = ({ backend_url }) => {
+const SignUp = () => {
   const [role, setrole] = useState(true);
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
-  const [profileDetails, setprofileDetails] = useState();
   const [formData, setformData] = useState({
     userName: "",
     email: "",
@@ -16,6 +16,7 @@ const SignUp = ({ backend_url }) => {
     isAdmin: true,
     profileImage: "",
   });
+  let { backend_url } = useContext(ProfileContext);
 
   const config = {
     headers: {
@@ -26,17 +27,15 @@ const SignUp = ({ backend_url }) => {
   const registerUser = (e) => {
     e.preventDefault();
     setisLoading(true);
+    toast.info("Signing up..");
     axios
       .post(`${backend_url}/user/register`, formData, config)
-      // axios
-      //   .post(`http://localhost:9000/user/register`, formData, config)
       .then(function (response) {
         setisLoading(false);
         let userDetails = [response.data.data.newUser];
-        // toast.success("Signed Up successfully");
-        console.log(userDetails);
+        toast.success("Signed Up successfully");
+        //console.log(userDetails);
         localStorage.setItem("accessToken", response.data.data.accessToken);
-        setprofileDetails(userDetails[0]);
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
         else
@@ -47,15 +46,15 @@ const SignUp = ({ backend_url }) => {
       .catch(function (error) {
         setisLoading(false);
         toast.error("Failed to Sign Up");
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
         console.log(error);
       });
   };
-  useEffect(() => {
-    return () => {
-      console.log(formData);
-    };
-  }, [formData]);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log(formData);
+  //   };
+  // }, [formData]);
 
   const changeUserData = (e) => {
     const { name, value, files } = e.target;
@@ -74,7 +73,7 @@ const SignUp = ({ backend_url }) => {
 
   return (
     <>
-      <Navbar profileDetails={profileDetails} />
+      <Navbar />
       <div className="signup w-[90vw] md:w-[60vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem] ">
         <ToastContainer
           position="top-center"
@@ -104,8 +103,8 @@ const SignUp = ({ backend_url }) => {
             <label htmlFor="name">Password</label>
             <input type="password" name="password" required />
           </div>
-          <div>
-            <label htmlFor="profileImage">Profile Pic</label>
+          <div className="labels">
+            <label htmlFor="profileImage">Profile Photo</label>
             <input type="file" accept="image/*" name="profileImage" />
           </div>
           <div className="flex justify-evenly mt-[10px]">

@@ -1,28 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const Feedback = () => {
   const location = useLocation();
   const { feedbacks } = location.state || {};
-  console.log(feedbacks);
-
-  //   const Feedback = () => {
-  //     return feedbacks ? (
-  //       feedbacks.map((feedback ,i) => {
-  //         return (
-  //           <div key = {i}>
-  //             <p>{feedback.content}</p>
-  //             <p>{feedback.owner.userName}</p>
-  //           </div>
-  //         );
-  //       })
-  //     ) : (
-  //       <p>No feedback available</p>
-  //     );
-  //   };
-  //   return <div>{<Feedback />}</div>;
-
+  // console.log(feedbacks);
+  
   return (
     <>
       <Navbar isLoggedIn={true} />
