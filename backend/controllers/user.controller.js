@@ -51,8 +51,17 @@ const registerUser = asynHandler(async (req, res) => {
   });
 
   const newUser = await User.findById(creatingUser._id).select("-password");
-  res
+  const { accessToken, refreshToken } = await generateToken(newUser._id);
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
     .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(
         200,
