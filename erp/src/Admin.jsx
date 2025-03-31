@@ -92,7 +92,7 @@ const Assignments = ({ assignments }) => {
               rel="noopener noreferrer"
               className="text-blue-500 underline"
             >
-              View PDF
+              Download PDF
             </a>
           );
         } else {
@@ -108,14 +108,14 @@ const Assignments = ({ assignments }) => {
       };
       return (
         <div
-          className="rounded-[0.5rem] p-[1rem] flex flex-col gap-[1rem] items-center transform hover:-translate-y-4 duration-400 shadow-2xl"
+          className="rounded-[0.5rem] p-[2rem_1.5rem] flex flex-col gap-[1rem] items-center transform hover:-translate-y-4 duration-400 shadow-2xl"
           key={i}
         >
-          <div className="mb-4">
-            <p>{file.title}</p>
+          <div className="h-32 mb-4 rounded-lg border-2 w-[100%] border-gray-300 p-[0.5rem_1rem] flex flex-col gap-2 justify-start">
+            <p className="text-[1.25rem] font-bold">{file.title}</p>
             <p>{file.description}</p>
           </div>
-          <div className="h-[200px] justify-items-center content-center">
+          <div className="h-[200px] w-[100%] flex justify-center items-center">
             {<FileType />}
           </div>
           <div className="flex gap-2 text-[1.25rem] m-[1rem_0]">
@@ -124,7 +124,7 @@ const Assignments = ({ assignments }) => {
           </div>
           <button
             onClick={() => getFeedback(file.title, file._id)}
-            className="text-white"
+            className="text-white mb-2"
           >
             Show Feedbacks
           </button>

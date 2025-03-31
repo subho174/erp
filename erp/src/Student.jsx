@@ -112,37 +112,40 @@ const Assignments = ({ files }) => {
               rel="noopener noreferrer"
               className="text-blue-500 underline"
             >
-              View PDF
+              Download PDF
             </a>
           );
         } else {
           return (
+            <>
             <img
               src={type}
               alt="Media"
               style={{ height: "200px" }}
               className="w-full rounded-lg"
             />
+            {/* <a href={`${type}`} download={`${type}`}>Download Image</a> */}
+            </>
           );
         }
       };
       return (
         <div
-          className="rounded-[0.5rem] p-[1rem] flex flex-col justify-between items-center transform hover:-translate-y-4 duration-400 shadow-2xl"
+          className="rounded-[0.5rem] p-[2rem_1.5rem] flex flex-col justify-between items-center transform hover:-translate-y-4 duration-400 shadow-2xl"
           key={i}
         >
-          <div className="mb-4">
-            <p>{file.title}</p>
+          <div className="mb-4 h-32 rounded-lg border-2 w-[100%] border-gray-300 p-[0.5rem_1rem] flex flex-col gap-2 justify-start">
+            <p className="text-[1.25rem] font-bold">{file.title}</p>
             <p>{file.description}</p>
           </div>
-          <div className="h-[200px] justify-items-center content-center">
+          <div className="h-[200px] w-[100%] flex justify-center items-center">
             {<FileType />}
           </div>
           <div className="flex gap-2 text-[1.25rem] m-[1rem_0]">
             <p className="font-bold">Deadline : </p>
             <p>{due_date?.replace("T00:00:00.000Z", "")}</p>
           </div>
-          <div>
+          <div className="w-[100%]">
             <h5>Feedback form</h5>
             <form
               onChange={(e) => changeFeedback(e, file._id)}

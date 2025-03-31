@@ -6,6 +6,7 @@ const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asynHandler = require("../utils/asyncHandler");
 const uploadOnCloudinary = require("../utils/cloudinary");
+const sendMail = require("../utils/sendMail");
 
 const generateToken = async (userId) => {
   try {
@@ -300,6 +301,25 @@ const getFeedbacks = asynHandler(async (req, res) => {
     );
 });
 
+const sendMailToUser = asynHandler(async (req, res) => {
+  const sentMail = await sendMail(
+    "subhodipnebu52@gmail.com",
+    "Test Email",
+    "Testing email service"
+    // [
+    //   {
+    //     filename: "FEE Structure.pdf",
+    //     path: "public\temp\FEEStructure.pdf",
+    //   },
+    // ]
+  );
+
+  if (!sentMail)
+    return res.status(400).json(new ApiError(400, null, "Unable to send mail"));
+
+  return res.status(200).json(new ApiResponse(200, "Mail sent successfully"));
+});
+
 module.exports = {
   registerUser,
   logInUser,
@@ -309,4 +329,5 @@ module.exports = {
   getAssignments,
   postFeedback,
   getFeedbacks,
+  sendMailToUser,
 };
