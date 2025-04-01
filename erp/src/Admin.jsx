@@ -10,8 +10,9 @@ import ProfileContext from "./ProfileContext";
 const Admin = () => {
   const location = useLocation();
   const { userData } = location.state || {};
+  const [recipients, setrecipients] = useState([]);
   //console.log(userData);
-
+  
   let { fetchUser, backend_url } = useContext(ProfileContext);
   const token = localStorage.getItem("accessToken");
   const config = {
@@ -31,6 +32,19 @@ const Admin = () => {
         console.log(e);
       });
 
+    // getting all recipients
+
+    axios
+      .get("http://localhost:9000/user/getAllUsers", config)
+      .then((res) => {
+        console.log(res);
+        setrecipients(res.data.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    console.log(recipients);
+    
     fetchUser();
   }, []);
   // console.log(assignments);
@@ -40,7 +54,7 @@ const Admin = () => {
       <Navbar isLoggedIn={true} />
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-[2.5rem] m-[1rem_0] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
-        <AdminUtils />
+        <AdminUtils recipients={recipients} />
         <h1 className="text-[2.5rem] m-[3rem_0] font-bold text-center">
           Old posts
         </h1>

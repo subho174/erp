@@ -3,14 +3,19 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import ProfileContext from "./ProfileContext";
 
-const AdminUtils = () => {
+const AdminUtils = ({ recipients }) => {
   const [formData, setformData] = useState({
     title: "",
     description: "",
     file: "",
     due_date: "",
   });
+
+  const subject = "new mail";
+  const body = "this is mail body";
+
   let { backend_url } = useContext(ProfileContext);
+  console.log(recipients);
   const uploadFile = (e) => {
     e.preventDefault();
     setisLoading(true);
@@ -23,7 +28,11 @@ const AdminUtils = () => {
         "Content-Type": "multipart/form-data", // Ensure the correct content type for file uploads
       },
     };
-
+    const config_2 = {
+      headers: {
+        Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+      },
+    };
     // const formDataToSend = new FormData();
     // formDataToSend.append("title", formData.title);
     // formDataToSend.append("description", formData.description);
@@ -38,6 +47,21 @@ const AdminUtils = () => {
         console.log(response);
         // let userDetails = [response.data.data];
         // console.log(userDetails, userDetails[0].isAdmin);
+
+        //sending mail to all recipients after posting assignment
+        axios
+          .post(
+            // `http://localhost:9000/user/send-email`,
+            `${backend_url}/user/send-email`,
+            { recipients, subject, body },
+            config_2
+          )
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       })
       .catch(function (error) {
         setisLoading(false);
