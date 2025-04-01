@@ -13,10 +13,11 @@ const AdminUtils = ({ admin, recipients }) => {
   
   const subject = `New Assignment from ${admin}`;
   const body = `Dear student,
-                  A new assignment has been posted, Check It soon...`;
+  
+  A new assignment has been posted.`;
 
   let { backend_url } = useContext(ProfileContext);
-  console.log(recipients);
+  //console.log(recipients);
   const uploadFile = async (e) => {
     e.preventDefault();
     setisLoading(true);

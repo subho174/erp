@@ -42,7 +42,7 @@ const Navbar = ({ isLoggedIn }) => {
         pauseOnHover
         theme="dark"
       />
-      <nav className="flex justify-between  p-[0.5rem_1rem] md:p-[0.5rem_2rem]">
+      <nav className="flex justify-between p-[0.5rem_1rem] md:p-[0.5rem_2rem]">
         <p className="font-bold text-[2rem]">AcadHub</p>
         <ul className="flex gap-[1rem] items-center">
           {/* {showdashboard ? (
@@ -71,9 +71,9 @@ const Navbar = ({ isLoggedIn }) => {
         ></i>
 
         {profileData ? (
-          <div className="flex justify-between pr-[1.5rem]">
+          <div className="flex flex-col gap-8 pr-[1rem]">
             <img
-              className="rounded-[50%] border-2 border-[grey]"
+              className="rounded-[50%] border-1 border-[grey]"
               src={
                 profileData.profileImage
                   ? `${profileData.profileImage}`

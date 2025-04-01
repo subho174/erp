@@ -138,7 +138,7 @@ const Assignments = ({ files }) => {
             <p className="text-[1.25rem] font-bold">{file.title}</p>
             <p>{file.description}</p>
           </div>
-          <div className="h-[200px] w-[100%] flex justify-center items-center">
+          <div className="h-[200px] flex justify-center items-center">
             {<FileType />}
           </div>
           <div className="flex gap-2 text-[1.25rem] m-[1rem_0]">
