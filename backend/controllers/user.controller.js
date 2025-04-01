@@ -165,6 +165,16 @@ const getUser = asynHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User fetched successfully"));
 });
 
+const getAllUsers = asynHandler(async (req, res) => {
+  const findUsers = await User.find({ isAdmin: false }).select(
+    "-password -refreshToken"
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, findUsers, "Users fetched successfully"));
+  // const users = findUsers.select("-password -refreshtoken")
+});
 const uploadFile = asynHandler(async (req, res) => {
   const { title, description, due_date } = req.body;
   if (!(title && description && due_date))
@@ -302,10 +312,21 @@ const getFeedbacks = asynHandler(async (req, res) => {
 });
 
 const sendMailToUser = asynHandler(async (req, res) => {
+  const { recipients, subject, body } = req.body;
+  console.log(recipients,subject,body);
+  let allRecipients = [];
+  recipients.map((recipient) => {
+    allRecipients.push(recipient.email)
+  })
+  //console.log(allRecipients,recipients);
+  
   const sentMail = await sendMail(
-    "subhodipnebu52@gmail.com",
-    "Test Email",
-    "Testing email service"
+    // "subhodipnebu52@gmail.com",
+    // "Test Email",
+    // "Testing email service",
+    allRecipients,
+    subject,
+    body
     // [
     //   {
     //     filename: "FEE Structure.pdf",
@@ -325,6 +346,7 @@ module.exports = {
   logInUser,
   logOutUser,
   getUser,
+  getAllUsers,
   uploadFile,
   getAssignments,
   postFeedback,

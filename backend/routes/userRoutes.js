@@ -9,6 +9,7 @@ const {
   getFeedbacks,
   getUser,
   sendMailToUser,
+  getAllUsers,
 } = require("../controllers/user.controller.js");
 const verifyJWT = require("../middleware/auth.middleware.js");
 const upload = require("../middleware/multer.middleware.js");
@@ -18,6 +19,7 @@ userRouter.post("/register", upload.single("profileImage"), registerUser);
 userRouter.post("/login", logInUser);
 userRouter.post("/logout", verifyJWT, logOutUser);
 userRouter.get("/get-user", verifyJWT, getUser);
+userRouter.get("/getAllUsers", verifyJWT, getAllUsers);
 userRouter.post("/upload-file", verifyJWT, upload.single("file"), uploadFile);
 userRouter.get("/get-assignments", verifyJWT, getAssignments);
 userRouter.post("/post-feedback", verifyJWT, postFeedback);
