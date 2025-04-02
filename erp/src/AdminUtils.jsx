@@ -10,7 +10,7 @@ const AdminUtils = ({ admin, recipients }) => {
     file: "",
     due_date: "",
   });
-  
+
   const subject = `New Assignment from ${admin}`;
   const body = `Dear student,
   
@@ -86,17 +86,22 @@ const AdminUtils = ({ admin, recipients }) => {
   const [isLoading, setisLoading] = useState(false);
 
   return (
-    <div className="w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[3vh] text-white bg-[#0f172a] rounded-[0.75rem]">
+    <div className="w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[3vh] bg-white rounded-[0.75rem]">
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={3000}
         hideProgressBar={true}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
       />
-      <h4 className="text-[1.75rem] text-center">Post Assignment</h4>
+      <h4 className="text-[1.75rem] font-medium text-center">
+        Post Assignment
+      </h4>
       <form
         className="mt-[1rem] w-[100%]"
         onSubmit={uploadFile}

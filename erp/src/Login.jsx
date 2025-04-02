@@ -64,17 +64,20 @@ const Login = () => {
     <>
       <Navbar isLoggedIn={false} />
       <div className="flex justify-center">
-        <div className="signup w-[90vw] md:w-[60vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem]">
-          <ToastContainer
-            position="top-center"
-            autoClose={3000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            closeOnClick={false}
-            pauseOnHover
-            theme="dark"
-          />
-          <header className="text-[1.25rem]">Welcome to ERP</header>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <div className="signup w-[90vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem]">
+          <header className="text-[1.5rem] font-bold">Sign In</header>
           <form
             onSubmit={logInUser}
             onChange={changeUserData}
@@ -117,21 +120,24 @@ const Login = () => {
               </div>
             </div>
             <div className="flex flex-col items-center gap-[1rem] mt-[1.5rem] ">
-              <button type="submit">Login</button>
+              <button type="submit">Sign In</button>
               {isLoading ? (
-                <span class="relative flex size-3">
-                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-                  <span class="relative inline-flex size-3 rounded-full bg-sky-500"></span>
+                <span className="relative flex size-3">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                  <span className="relative inline-flex size-3 rounded-full bg-sky-500"></span>
                 </span>
               ) : (
                 ""
               )}
-              <p
-                className="hover:text-green-300 cursor-pointer"
-                onClick={() => navigate("/")}
-              >
-                Don't have an account ?
-              </p>
+              <div className="flex gap-2">
+                <p>Don't have an account ?</p>
+                <p
+                  className="text-[#402ae9] font-bold cursor-pointer"
+                  onClick={() => navigate("/")}
+                >
+                  Sign Up
+                </p>
+              </div>
             </div>
           </form>
         </div>

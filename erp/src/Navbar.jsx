@@ -34,16 +34,19 @@ const Navbar = ({ isLoggedIn }) => {
   return (
     <div className="w-[100%]">
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={3000}
         hideProgressBar={true}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
       />
       <nav className="flex justify-between p-[0.5rem_1rem] md:p-[0.5rem_2rem]">
-        <p className="font-bold text-[2rem]">AcadHub</p>
+        <p className="font-semibold text-[2rem]">AcadHub</p>
         <ul className="flex gap-[1rem] items-center">
           {/* {showdashboard ? (
             <li>
@@ -71,9 +74,9 @@ const Navbar = ({ isLoggedIn }) => {
         ></i>
 
         {profileData ? (
-          <div className="flex flex-col gap-8 pr-[1rem]">
+          <div className="flex flex-col gap-6 pr-[1rem]">
             <img
-              className="rounded-[50%] border-1 border-[grey]"
+              className="rounded-[50%] border-1 border-gray-400"
               src={
                 profileData.profileImage
                   ? `${profileData.profileImage}`
@@ -82,6 +85,7 @@ const Navbar = ({ isLoggedIn }) => {
               style={{ height: "100px", width: "100px" }}
               alt="Profile Photo"
             />
+            <hr />
             <div className="flex flex-col gap-3">
               <div>
                 <label htmlFor="" className="profile_label">

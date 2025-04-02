@@ -36,16 +36,19 @@ const Student = () => {
   return (
     <div>
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={3000}
         hideProgressBar={true}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick={true}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
       />
       <Navbar isLoggedIn={true} />
-      <h1 className="text-[2.5rem] w-[80%] mx-auto my-[1rem] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
+      <h1 className="text-[2.5rem] w-[80%] mx-auto my-[1rem] font-semibold text-center">{`Welcome ${userData.userName}`}</h1>
       <div className="z-0">
         <h4 className="text-[2rem] text-center mt-10">Pending assignments</h4>
         <div className="w-[85%] m-[2rem] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem]">
@@ -118,13 +121,13 @@ const Assignments = ({ files }) => {
         } else {
           return (
             <>
-            <img
-              src={type}
-              alt="Media"
-              style={{ height: "200px" }}
-              className="w-full rounded-lg"
-            />
-            {/* <a href={`${type}`} download={`${type}`}>Download Image</a> */}
+              <img
+                src={type}
+                alt="Media"
+                style={{ height: "200px" }}
+                className="w-full rounded-lg"
+              />
+              {/* <a href={`${type}`} download={`${type}`}>Download Image</a> */}
             </>
           );
         }

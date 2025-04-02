@@ -74,18 +74,21 @@ const SignUp = () => {
   return (
     <>
       <Navbar />
-      <div className="signup w-[90vw] md:w-[60vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] text-white bg-[#0f172a] flex flex-col justify-center items-center rounded-[0.75rem] ">
+      <div className="signup w-[90vw] md:w-[55vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem] ">
         <ToastContainer
-          position="top-center"
+          position="top-right"
           autoClose={3000}
           hideProgressBar={true}
           newestOnTop={false}
-          closeOnClick={false}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
           pauseOnHover
-          theme="dark"
+          theme="light"
         />
 
-        <header className="text-[1.25rem] ">Welcome to ERP</header>
+        <header className="text-[1.5rem] font-bold">Sign Up</header>
         <form
           className="mt-[1rem] w-[100%]"
           onSubmit={registerUser}
@@ -143,12 +146,21 @@ const SignUp = () => {
             ) : (
               ""
             )}
-            <p
+            {/* <p
               className="hover:text-green-300 cursor-pointer"
               onClick={() => navigate("/login")}
             >
               Already have an account ?
-            </p>
+            </p> */}
+            <div className="flex gap-2">
+              <p>Already have an account ?</p>
+              <p
+                className="text-[#402ae9] font-bold cursor-pointer"
+                onClick={() => navigate("/login")}
+              >
+                Sign In
+              </p>
+            </div>
           </div>
         </form>
       </div>

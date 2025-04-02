@@ -53,9 +53,9 @@ const Admin = () => {
     <>
       <Navbar isLoggedIn={true} />
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-[2.5rem] m-[1rem_0] font-bold text-center">{`Welcome ${userData.userName}`}</h1>
+        <h1 className="text-[2.5rem] m-[1rem_0] font-semibold text-center">{`Welcome ${userData.userName}`}</h1>
         <AdminUtils admin={userData.userName} recipients={recipients} />
-        <h1 className="text-[2.5rem] m-[3rem_0] font-bold text-center">
+        <h1 className="text-[2.25rem] m-[3rem_0] font-semibold text-center">
           Old posts
         </h1>
         <div className="w-[85%] grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-[4rem_2.5rem] mb-[4rem]">

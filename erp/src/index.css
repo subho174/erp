@@ -15,8 +15,9 @@ body {
 }
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
-  border-color: #646cff;
+  width: 100%;
+  border: 2px solid transparent;
+  /* border-color: #646cff; */
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -24,29 +25,33 @@ button {
   /* background-color: #1a1a1a; */
   background-color: #0f172a;
   cursor: pointer;
+  color: white;
   transition: border-color 0.25s;
 }
 button:hover,
 li:hover {
-  /* border-color: #646cff; */
+  border-color: #646cff;
   background-color: white;
   color: black;
 }
 
 @layer components {
+  body{
+    @apply bg-gray-100
+  }
   .labels {
     @apply flex flex-col;
   }
   label {
-    @apply mr-[10px];
+    @apply mr-[10px] font-medium;
   }
   input {
-    @apply rounded-[0.25rem] outline-none p-[0.25rem_0.5rem] text-black bg-white m-[0.75rem_0] focus:border-[#646cff] focus:border-[2.5px];
+    @apply border-2 border-gray-300 rounded-[0.25rem] outline-none p-[0.25rem_0.5rem] text-black m-[0.75rem_0] focus:border-[#646cff] focus:border-[2px];
   }
   li {
-    @apply text-[1.15rem] border-2 cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.35rem] transform hover:border-[#646cff] hover:translate-y-2 duration-400;
+    @apply text-[1.25rem] border-2 cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.5rem] transform hover:translate-y-2 duration-400;
   }
   .profile_label {
-    @apply text-[1.15rem] font-bold;
+    @apply text-[1.15rem] font-semibold;
   }
 }
