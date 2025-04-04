@@ -24,6 +24,12 @@ const userSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    students: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     refreshToken: {
       type: String,
     },

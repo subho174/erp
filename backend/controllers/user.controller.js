@@ -165,7 +165,7 @@ const getUser = asynHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User fetched successfully"));
 });
 
-const getAllUsers = asynHandler(async (req, res) => {
+const getAllStudents = asynHandler(async (req, res) => {
   const findUsers = await User.find({ isAdmin: false }).select(
     "-password -refreshToken"
   );
@@ -346,7 +346,7 @@ module.exports = {
   logInUser,
   logOutUser,
   getUser,
-  getAllUsers,
+  getAllStudents,
   uploadFile,
   getAssignments,
   postFeedback,

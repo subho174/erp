@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const userRouter = require("./routes/userRoutes");
+const adminRouter = require("./routes/adminRoutes");
 
 const app = express();
 require("dotenv").config();
@@ -21,6 +22,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 app.use("/user", userRouter);
+app.use("/user/admin", adminRouter);
 
 connectDB();
 
