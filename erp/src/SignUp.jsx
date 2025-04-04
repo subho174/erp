@@ -1,9 +1,9 @@
 import { useEffect, useState, React, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [role, setrole] = useState(true);
@@ -16,7 +16,7 @@ const SignUp = () => {
     isAdmin: true,
     profileImage: "",
   });
-  let { backend_url } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
 
   const config = {
     headers: {
@@ -27,13 +27,20 @@ const SignUp = () => {
   const registerUser = (e) => {
     e.preventDefault();
     setisLoading(true);
-    toast.info("Signing up..");
+    Toast.fire({
+      icon: "info",
+      title: "Signing Up...",
+    });
     axios
       .post(`${backend_url}/user/register`, formData, config)
       .then(function (response) {
         setisLoading(false);
         let userDetails = [response.data.data.newUser];
-        toast.success("Signed Up successfully");
+        Swal.close();
+        Toast_2.fire({
+          icon: "success",
+          title: "Signed Up successfully",
+        });
         //console.log(userDetails);
         localStorage.setItem("accessToken", response.data.data.accessToken);
         if (userDetails[0].isAdmin == true)
@@ -45,8 +52,14 @@ const SignUp = () => {
       })
       .catch(function (error) {
         setisLoading(false);
-        toast.error("Failed to Sign Up");
-        toast.error(error.response.data.message);
+        Toast_2.fire({
+          icon: "error",
+          title: "Failed to Sign Up",
+        });
+        Toast_2.fire({
+          icon: "error",
+          title: `${error.response.data.message}`,
+        });
         console.log(error);
       });
   };
@@ -75,19 +88,6 @@ const SignUp = () => {
     <>
       <Navbar />
       <div className="signup w-[90vw] md:w-[55vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem] ">
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick={true}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-
         <header className="text-[1.5rem] font-bold">Sign Up</header>
         <form
           className="mt-[1rem] w-[100%]"

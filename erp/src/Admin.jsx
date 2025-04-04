@@ -4,8 +4,8 @@ import AdminUtils from "./AdminUtils";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import { toast } from "react-toastify";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const Admin = () => {
   const location = useLocation();
@@ -53,7 +53,7 @@ const Admin = () => {
     <>
       <Navbar isLoggedIn={true} />
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-[2.5rem] m-[1rem_0] font-semibold text-center">{`Welcome ${userData.userName}`}</h1>
+        <h1 className="text-[2.5rem] m-[1rem] font-semibold text-center">{`Welcome ${userData.userName}`}</h1>
         <AdminUtils admin={userData.userName} recipients={recipients} />
         <h1 className="text-[2.25rem] m-[3rem_0] font-semibold text-center">
           Old posts
@@ -70,7 +70,7 @@ export default Admin;
 
 const Assignments = ({ assignments }) => {
   const navigate = useNavigate();
-  let { backend_url } = useContext(ProfileContext);
+  let { backend_url, Toast } = useContext(ProfileContext);
   const token = localStorage.getItem("accessToken");
   const config = {
     headers: {
@@ -79,7 +79,10 @@ const Assignments = ({ assignments }) => {
   };
 
   const getFeedback = (file_title, file_id) => {
-    toast.info("Loading Feedbacks..");
+    Toast.fire({
+      icon: "info",
+      title: "Loading feedbacks...",
+    });
     axios
       .get(`${backend_url}/user/get-feedback/?file_id=${file_id}`, config) // in get requests, second argument is reserved for config, no other parameter should be passed
       .then((res) => {
@@ -87,6 +90,7 @@ const Assignments = ({ assignments }) => {
         navigate(`/dashboard/admin/feedbacks/${file_title}`, {
           state: { feedbacks: res.data.data },
         });
+        Swal.close();
       })
       .catch((e) => {
         console.log(e);
@@ -127,7 +131,7 @@ const Assignments = ({ assignments }) => {
         >
           <div className="h-32 mb-4 rounded-lg border-2 w-[100%] border-gray-300 p-[0.5rem_1rem] flex flex-col gap-2 justify-start">
             <p className="text-[1.25rem] font-bold">{file.title}</p>
-            <p>{file.description}</p>
+            <p className="break-words">{file.description}</p>
           </div>
           <div className="h-[200px] flex justify-center items-center">
             {<FileType />}

@@ -1,52 +1,61 @@
 import axios from "axios";
 import { useState, React, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const Navbar = ({ isLoggedIn }) => {
   const navigate = useNavigate();
-  let { profileData, setprofileData, backend_url } = useContext(ProfileContext);
+  let { profileData, setprofileData, backend_url, Toast, Toast_2 } =
+    useContext(ProfileContext);
   // console.log(profileData);
   const [profile, setprofile] = useState(false);
 
   const logOut = () => {
-    toast.info("Logging Out");
     const token = localStorage.getItem("accessToken");
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios
-      .post(`${backend_url}/user/logout`, {}, config)
-      .then((res) => {
-        console.log(res);
-        localStorage.removeItem("accessToken");
-        setprofileData(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Logout",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Toast.fire({
+          icon: "info",
+          title: "Logging Out...",
+        });
+        axios
+          .post(`${backend_url}/user/logout`, {}, config)
+          .then((res) => {
+            console.log(res);
+            localStorage.removeItem("accessToken");
+            setprofileData(null);
+            navigate("/");
+            Swal.close();
+            Toast_2.fire({
+              icon: "success",
+              title: "Logged Out successfully",
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
   };
-
   return (
     <div className="w-[100%]">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <nav className="flex justify-between p-[0.5rem_1rem] md:p-[0.5rem_2rem]">
-        <p className="font-semibold text-[2rem]">AcadHub</p>
+        <p className="font-bold text-[2rem]">AcadHub</p>
         <ul className="flex gap-[1rem] items-center">
           {/* {showdashboard ? (
             <li>

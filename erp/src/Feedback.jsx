@@ -1,11 +1,18 @@
-import React, { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
+import ProfileContext from "./ProfileContext";
 
 const Feedback = () => {
   const location = useLocation();
   const { feedbacks } = location.state || {};
+  const { fetchUser } = useContext(ProfileContext);
+  const navigate = useNavigate();
   // console.log(feedbacks);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -29,6 +36,12 @@ const Feedback = () => {
         ) : (
           <p>No feedback available</p>
         )}
+      </div>
+      <div className="flex justify-center">
+        <button style={{ width: "200px" }} onClick={() => navigate(-1)}>
+          <i className="fa-solid fa-arrow-left mr-2"></i>
+          Back to dashboard
+        </button>
       </div>
     </>
   );

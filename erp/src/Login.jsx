@@ -1,13 +1,13 @@
 import { useEffect, useState, React, use, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [role, setrole] = useState(true);
-  let { backend_url } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
 
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
@@ -21,7 +21,10 @@ const Login = () => {
   const logInUser = (e) => {
     e.preventDefault();
     setisLoading(true);
-    toast.info("Logging in..");
+    Toast.fire({
+      icon: "info",
+      title: "Logging in..",
+    });
     axios
       .post(`${backend_url}/user/login`, formData)
       .then(function (response) {
@@ -29,7 +32,11 @@ const Login = () => {
         localStorage.setItem("accessToken", response.data.data.accessToken);
         let userDetails = [response.data.data.loggedInUser];
         //console.log(userDetails, userDetails[0].isAdmin);
-        toast.success("Logged In successfully");
+        Swal.close();
+        Toast_2.fire({
+          icon: "info",
+          title: "Logged In successfully",
+        });
         if (userDetails[0].isAdmin == true)
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
         else
@@ -39,8 +46,16 @@ const Login = () => {
       })
       .catch(function (error) {
         setisLoading(false);
-        toast.error("Failed to Log In");
-        toast.info(`${error.response.data.message}`);
+        Toast_2.fire({
+          icon: "error",
+          title: "Failed to Log In",
+        });
+        setTimeout(() => {
+          Toast_2.fire({
+            icon: "info",
+            title: `${error.response.data.message}`,
+          });
+        }, 2000);
         console.log(error);
       });
   };
@@ -64,18 +79,6 @@ const Login = () => {
     <>
       <Navbar isLoggedIn={false} />
       <div className="flex justify-center">
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick={true}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
         <div className="signup w-[90vw] md:w-[50vw] lg:w-[40vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem]">
           <header className="text-[1.5rem] font-bold">Sign In</header>
           <form

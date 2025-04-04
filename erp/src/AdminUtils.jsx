@@ -1,7 +1,7 @@
 import { React, useState, useContext } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const AdminUtils = ({ admin, recipients }) => {
   const [formData, setformData] = useState({
@@ -16,12 +16,15 @@ const AdminUtils = ({ admin, recipients }) => {
   
   A new assignment has been posted.`;
 
-  let { backend_url } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
   //console.log(recipients);
   const uploadFile = async (e) => {
     e.preventDefault();
     setisLoading(true);
-    toast.info("Assignment is being posted");
+    Toast.fire({
+      icon: "info",
+      title: "Posting Assignment..",
+    });
     //console.log(formData);
     const token = localStorage.getItem("accessToken");
     const config = {
@@ -45,14 +48,21 @@ const AdminUtils = ({ admin, recipients }) => {
       .post(`${backend_url}/user/upload-file`, formData, config)
       .then(function (response) {
         setisLoading(false);
-        toast.success("Assignment posted successfully");
+        Swal.close();
+        Toast_2.fire({
+          icon: "success",
+          title: "Assignment posted successfully",
+        });
         console.log(response);
         // let userDetails = [response.data.data];
         // console.log(userDetails, userDetails[0].isAdmin);
       })
       .catch(function (error) {
         setisLoading(false);
-        toast.error("Failed to post assignment");
+        Toast_2.fire({
+          icon: "error",
+          title: "Failed to post assignment",
+        });
         console.log(error);
       });
 
@@ -86,19 +96,7 @@ const AdminUtils = ({ admin, recipients }) => {
   const [isLoading, setisLoading] = useState(false);
 
   return (
-    <div className="w-[90vw] md:w-[50vw] lg:w-[35vw] p-[1rem_1.5rem] mt-[3vh] bg-white rounded-[0.75rem]">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+    <div className="w-[90vw] md:w-[50vw] lg:w-[40vw] xl:w-[35vw] 2xl:w-[30vw] p-[1rem_1.5rem] mt-[3vh] bg-white rounded-[0.75rem]">
       <h4 className="text-[1.75rem] font-medium text-center">
         Post Assignment
       </h4>

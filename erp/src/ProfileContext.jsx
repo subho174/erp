@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
+import Swal from "sweetalert2";
 
 const ProfileContext = createContext();
 
@@ -25,6 +26,30 @@ export const ProfileProvider = ({ children }) => {
       });
   };
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    //timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
+  const Toast_2 = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   return (
     <ProfileContext.Provider
       value={{
@@ -32,6 +57,8 @@ export const ProfileProvider = ({ children }) => {
         setprofileData,
         fetchUser,
         backend_url,
+        Toast,
+        Toast_2,
       }}
     >
       {children}

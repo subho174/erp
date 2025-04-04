@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState, React, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 import Navbar from "./Navbar";
 import ProfileContext from "./ProfileContext";
+import Swal from "sweetalert2";
 
 const Student = () => {
   const location = useLocation();
@@ -35,18 +35,6 @@ const Student = () => {
 
   return (
     <div>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick={true}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <Navbar isLoggedIn={true} />
       <h1 className="text-[2.5rem] w-[80%] mx-auto my-[1rem] font-semibold text-center">{`Welcome ${userData.userName}`}</h1>
       <div className="z-0">
@@ -66,7 +54,7 @@ const Assignments = ({ files }) => {
     content: "",
     file_id: "",
   });
-  let { backend_url } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
   const token = localStorage.getItem("accessToken");
   const config = {
     headers: {
@@ -82,7 +70,10 @@ const Assignments = ({ files }) => {
 
   const shareFeedback = (event, id) => {
     event.preventDefault();
-    toast.info("Feedback is being posted");
+    Toast.fire({
+      icon: "info",
+      title: "Posting Feedback...",
+    });
     // setisLoading(true);
     // setfeedbackData((prev) => ({ ...prev, file_id: id }))
 
@@ -90,12 +81,19 @@ const Assignments = ({ files }) => {
       .post(`${backend_url}/user/post-feedback`, feedbackData, config)
       .then((res) => {
         // setisLoading(false);
-        toast.success("Feedback posted successfully");
+        Swal.close();
+        Toast_2.fire({
+          icon: "success",
+          title: "Feedback posted successfully",
+        });
         console.log(res);
       })
       .catch((e) => {
         // setisLoading(false);
-        toast.error("Failed to post feedback");
+        Toast_2.fire({
+          icon: "error",
+          title: "Failed to post feedback",
+        });
         console.log(e);
       });
   };
@@ -139,7 +137,7 @@ const Assignments = ({ files }) => {
         >
           <div className="mb-4 h-32 rounded-lg border-2 w-[100%] border-gray-300 p-[0.5rem_1rem] flex flex-col gap-2 justify-start">
             <p className="text-[1.25rem] font-bold">{file.title}</p>
-            <p>{file.description}</p>
+            <p className="break-words">{file.description}</p>
           </div>
           <div className="h-[200px] flex justify-center items-center">
             {<FileType />}
