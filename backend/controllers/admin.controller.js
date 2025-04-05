@@ -6,6 +6,12 @@ const mongoose = require("mongoose");
 
 const addNewStudent = asynHandler(async (req, res) => {
   const { studentId } = req.body;
+  const doesUserExist = await User.find({ _id: studentId, isAdmin: false });
+
+  if (doesUserExist.length == 0)
+    return res
+      .status(400)
+      .json(new ApiError(400, undefined, "Choose an appropriate student"));
 
   const existingStudents = await User.aggregate([
     {
@@ -14,7 +20,6 @@ const addNewStudent = asynHandler(async (req, res) => {
       },
     },
   ]);
-  console.log(existingStudents, existingStudents[0].students);
 
   const doesStudentExist = existingStudents[0].students.some((student) => {
     return studentId == student;
