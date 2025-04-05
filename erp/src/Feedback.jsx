@@ -26,10 +26,10 @@ const Feedback = () => {
                 className="rounded-[0.5rem] p-[0.5rem_1rem] w-[100%] border-2 border-gray-500"
                 key={i}
               >
-                <p className="font-medium text-[1.25rem]">
+                <p className="font-bold text-[1.35rem]">
                   {feedback.owner.userName}
                 </p>
-                <p className="text-[1.15rem]">{feedback.content}</p>
+                <p className="text-[1.1rem]">{feedback.content}</p>
               </div>
             );
           })

@@ -69,7 +69,7 @@ const AdminUtils = ({ admin, recipients }) => {
     //sending mail to all recipients after posting assignment
     await axios
       .post(
-        // `http://localhost:9000/user/send-email`,
+        //`http://localhost:9000/user/send-email`,
         `${backend_url}/user/send-email`,
         { recipients, subject, body },
         config_2

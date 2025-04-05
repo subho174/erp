@@ -11,6 +11,7 @@ const Admin = () => {
   const location = useLocation();
   const { userData } = location.state || {};
   const [recipients, setrecipients] = useState([]);
+  const [assignments, setassignments] = useState();
   //console.log(userData);
 
   let { fetchUser, backend_url } = useContext(ProfileContext);
@@ -20,7 +21,7 @@ const Admin = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const [assignments, setassignments] = useState();
+
   useEffect(() => {
     axios
       .get(`${backend_url}/user/get-assignments`, config)
@@ -33,9 +34,8 @@ const Admin = () => {
       });
 
     // getting all recipients
-
     axios
-      .get(`${backend_url}/user/getAllUsers`, config)
+      .get(`${backend_url}/user/admin/get-student`, config)
       .then((res) => {
         console.log(res);
         setrecipients(res.data.data);
@@ -43,7 +43,6 @@ const Admin = () => {
       .catch((e) => {
         console.log(e);
       });
-    //console.log(recipients);
 
     fetchUser();
   }, []);

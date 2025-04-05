@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 const Login = () => {
   const [role, setrole] = useState(true);
-  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2, setisAdmin } = useContext(ProfileContext);
 
   const navigate = useNavigate();
   const [isLoading, setisLoading] = useState(false);
@@ -37,12 +37,15 @@ const Login = () => {
           icon: "info",
           title: "Logged In successfully",
         });
-        if (userDetails[0].isAdmin == true)
+        if (userDetails[0].isAdmin == true) {
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
-        else
+          setisAdmin(true);
+        } else {
           navigate("/dashboard/student", {
             state: { userData: userDetails[0] },
           });
+          setisAdmin(false);
+        }
       })
       .catch(function (error) {
         setisLoading(false);

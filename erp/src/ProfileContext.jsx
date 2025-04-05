@@ -1,20 +1,32 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import Swal from "sweetalert2";
 
 const ProfileContext = createContext();
 
 export const ProfileProvider = ({ children }) => {
   const [profileData, setprofileData] = useState();
+  const [students, setstudents] = useState([]);
+  const [isAdmin, setisAdmin] = useState(true);
+  const [isSmallScreen, setisSmallScreen] = useState(true);
+
   const backend_url = import.meta.env.VITE_BACKEND_URL;
+  const token = localStorage.getItem("accessToken");
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setisSmallScreen(window.innerWidth <= 600);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchUser = () => {
-    const token = localStorage.getItem("accessToken");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
     axios
       .get(`${backend_url}/user/get-user`, config)
       .then((res) => {
@@ -23,6 +35,22 @@ export const ProfileProvider = ({ children }) => {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  const fetchAllStudents = () => {
+    axios
+      .get(
+        `${backend_url}/user/getAllStudents`,
+        // `http://localhost:9000/user/getAllStudents`,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        setstudents(res.data.data);
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
@@ -59,6 +87,11 @@ export const ProfileProvider = ({ children }) => {
         backend_url,
         Toast,
         Toast_2,
+        students,
+        fetchAllStudents,
+        isAdmin,
+        setisAdmin,
+        isSmallScreen
       }}
     >
       {children}

@@ -10,6 +10,7 @@ import Student from "./Student.jsx";
 import Login from "./Login.jsx";
 import Feedback from "./Feedback.jsx";
 import { ProfileProvider } from "./ProfileContext.jsx";
+import AdminUtils2 from "./AdminUtils2.jsx.jsx";
 
 const root = document.getElementById("root");
 
@@ -25,6 +26,7 @@ ReactDOM.createRoot(root).render(
           path="/dashboard/admin/feedbacks/:file_title"
           element={<Feedback />}
         />
+        <Route path="/dashboard/admin/students" element={<AdminUtils2 />} />
       </Routes>
     </ProfileProvider>
   </BrowserRouter>

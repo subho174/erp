@@ -16,7 +16,7 @@ const SignUp = () => {
     isAdmin: true,
     profileImage: "",
   });
-  let { backend_url, Toast, Toast_2 } = useContext(ProfileContext);
+  let { backend_url, Toast, Toast_2, setisAdmin } = useContext(ProfileContext);
 
   const config = {
     headers: {
@@ -43,12 +43,15 @@ const SignUp = () => {
         });
         //console.log(userDetails);
         localStorage.setItem("accessToken", response.data.data.accessToken);
-        if (userDetails[0].isAdmin == true)
+        if (userDetails[0].isAdmin == true) {
           navigate("/dashboard/admin", { state: { userData: userDetails[0] } });
-        else
+          setisAdmin(true);
+        } else {
           navigate("/dashboard/student", {
             state: { userData: userDetails[0] },
           });
+          setisAdmin(false);
+        }
       })
       .catch(function (error) {
         setisLoading(false);
@@ -146,12 +149,6 @@ const SignUp = () => {
             ) : (
               ""
             )}
-            {/* <p
-              className="hover:text-green-300 cursor-pointer"
-              onClick={() => navigate("/login")}
-            >
-              Already have an account ?
-            </p> */}
             <div className="flex gap-2">
               <p>Already have an account ?</p>
               <p
