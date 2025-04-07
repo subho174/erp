@@ -197,6 +197,7 @@ const uploadFile = asynHandler(async (req, res) => {
     description,
     due_date,
     file_url: file?.url,
+    owner: req.user._id,
   });
 
   return res
@@ -204,14 +205,73 @@ const uploadFile = asynHandler(async (req, res) => {
     .json(new ApiResponse(200, uploadedFile, "file uploaded successfully"));
 });
 
-const getAssignments = asynHandler(async (req, res) => {
-  const assignments = await File.find({});
+// const getAssignments = asynHandler(async (req, res) => {
+//   const assignments = await File.find({});
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, assignments, "assignments fetched successfully")
-    );
+//   return res
+//     .status(200)
+//     .json(
+//       new ApiResponse(200, assignments, "assignments fetched successfully")
+//     );
+// });
+
+const getAssignmentsForStudent = asynHandler(async (req, res) => {
+  try {
+    const adminsOfStudent = await User.findById(req.user._id).select("admins");
+    let assignments = [];
+    // console.log(adminsOfStudent);
+
+    for (let admin of adminsOfStudent.admins) {
+      // important point
+      // first tried with forEach, but forEach does not return promise so await does not work with it;
+      // so for....of is used
+      let assignmentsOfAdmin = await File.aggregate([
+        {
+          $match: {
+            owner: admin,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "owner",
+            foreignField: "_id",
+            as: "admin",
+            pipeline: [
+              {
+                $project: {
+                  userName: 1,
+                  email: 1,
+                },
+              },
+            ],
+          },
+        },
+        {
+          $addFields: {
+            admin: {
+              $first: "$admin",
+            },
+          },
+        },
+      ]);
+      // console.log(assignmentsOfAdmin);
+      assignments.push(assignmentsOfAdmin);
+      // console.log(assignments);
+    }
+    console.log(assignments);
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          assignments,
+          "Assignments of all admins fetched successfully"
+        )
+      );
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const postFeedback = asynHandler(async (req, res) => {
@@ -313,13 +373,13 @@ const getFeedbacks = asynHandler(async (req, res) => {
 
 const sendMailToUser = asynHandler(async (req, res) => {
   const { recipients, subject, body } = req.body;
-  console.log(recipients,subject,body);
+  console.log(recipients, subject, body);
   let allRecipients = [];
   recipients.map((recipient) => {
-    allRecipients.push(recipient.email)
-  })
+    allRecipients.push(recipient.email);
+  });
   //console.log(allRecipients,recipients);
-  
+
   const sentMail = await sendMail(
     // "subhodipnebu52@gmail.com",
     // "Test Email",
@@ -348,7 +408,8 @@ module.exports = {
   getUser,
   getAllStudents,
   uploadFile,
-  getAssignments,
+  //getAssignments,
+  getAssignmentsForStudent,
   postFeedback,
   getFeedbacks,
   sendMailToUser,

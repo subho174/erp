@@ -10,6 +10,7 @@ const {
   getUser,
   sendMailToUser,
   getAllStudents,
+  getAssignmentsForStudent,
 } = require("../controllers/user.controller.js");
 const verifyJWT = require("../middleware/auth.middleware.js");
 const upload = require("../middleware/multer.middleware.js");
@@ -21,7 +22,8 @@ userRouter.post("/logout", verifyJWT, logOutUser);
 userRouter.get("/get-user", verifyJWT, getUser);
 userRouter.get("/getAllStudents", verifyJWT, getAllStudents);
 userRouter.post("/upload-file", verifyJWT, upload.single("file"), uploadFile);
-userRouter.get("/get-assignments", verifyJWT, getAssignments);
+//userRouter.get("/get-assignments", verifyJWT, getAssignments);
+userRouter.patch("/assignment-for-student", verifyJWT, getAssignmentsForStudent);
 userRouter.post("/post-feedback", verifyJWT, postFeedback);
 userRouter.get("/get-feedback", verifyJWT, getFeedbacks);
 userRouter.post("/send-email", verifyJWT, sendMailToUser);

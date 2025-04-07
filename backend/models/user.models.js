@@ -24,6 +24,12 @@ const userSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    admins: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
     students: [
       {
         type: Schema.Types.ObjectId,

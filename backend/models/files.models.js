@@ -16,6 +16,10 @@ const fileSchema = new Schema(
     file_url: {
       type: String,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     feedbacks: [
       {
         type: Schema.Types.ObjectId,

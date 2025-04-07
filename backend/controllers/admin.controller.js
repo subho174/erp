@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 
 const addNewStudent = asynHandler(async (req, res) => {
   const { studentId } = req.body;
+
+  // checking if student id is valid
   const doesUserExist = await User.find({ _id: studentId, isAdmin: false });
 
   if (doesUserExist.length == 0)
@@ -13,6 +15,7 @@ const addNewStudent = asynHandler(async (req, res) => {
       .status(400)
       .json(new ApiError(400, undefined, "Choose an appropriate student"));
 
+  // fetching own students (all)
   const existingStudents = await User.aggregate([
     {
       $match: {
@@ -21,6 +24,7 @@ const addNewStudent = asynHandler(async (req, res) => {
     },
   ]);
 
+  // checking if student is already added as student
   const doesStudentExist = existingStudents[0].students.some((student) => {
     return studentId == student;
   });
@@ -30,11 +34,16 @@ const addNewStudent = asynHandler(async (req, res) => {
       .status(400)
       .json(new ApiError(400, null, "Already added as Student"));
 
+  // adding student
   const updatedStudents = await User.findByIdAndUpdate(
     req.user._id,
     { $push: { students: new mongoose.Types.ObjectId(studentId) } },
     { new: true }
   );
+
+  await User.findByIdAndUpdate(studentId, {
+    $addToSet: { admins: new mongoose.Types.ObjectId(req.user._id) },
+  });
 
   return res
     .status(200)
