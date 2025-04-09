@@ -83,7 +83,7 @@ const getOwnStudent = asynHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, students, "students fetched successfully"));
+    .json(new ApiResponse(200, students[0].students, "students fetched successfully"));
 });
 
 const getAssignmentsForAdmin = asynHandler(async (req, res) => {
@@ -100,7 +100,7 @@ const getAssignmentsForAdmin = asynHandler(async (req, res) => {
       },
     ]);
 
-    console.log(assignmentsByAdmin);
+    // console.log(assignmentsByAdmin);
     return res
       .status(200)
       .json(

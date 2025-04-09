@@ -48,7 +48,7 @@ const Navbar = ({ isLoggedIn }) => {
             console.log(res);
             localStorage.removeItem("accessToken");
             setprofileData(null);
-            navigate("/");
+            navigate("/login");
             Swal.close();
             Toast_2.fire({
               icon: "success",
@@ -70,7 +70,7 @@ const Navbar = ({ isLoggedIn }) => {
           <>
             <i
               onClick={() => setshowMenu(!showMenu)}
-              class="fa-solid fa-xmark text-2xl"
+              className="fa-solid fa-xmark text-2xl"
             ></i>
           </>
         ) : (
@@ -78,7 +78,7 @@ const Navbar = ({ isLoggedIn }) => {
             {isSmallScreen ? (
               <i
                 onClick={() => setshowMenu(!showMenu)}
-                class="fa-solid fa-bars text-2xl"
+                className="fa-solid fa-bars text-2xl"
               ></i>
             ) : (
               <>

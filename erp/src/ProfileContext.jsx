@@ -7,7 +7,7 @@ const ProfileContext = createContext();
 export const ProfileProvider = ({ children }) => {
   const [profileData, setprofileData] = useState();
   const [students, setstudents] = useState([]);
-  const [isAdmin, setisAdmin] = useState(true);
+  const [isAdmin, setisAdmin] = useState();
   const [showFeedbackForm, setshowFeedbackForm] = useState(false);
 
   const backend_url = import.meta.env.VITE_BACKEND_URL;
