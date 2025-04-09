@@ -1,3 +1,4 @@
+const File = require("../models/files.models");
 const User = require("../models/user.models");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
@@ -84,4 +85,33 @@ const getOwnStudent = asynHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, students, "students fetched successfully"));
 });
-module.exports = { addNewStudent, getOwnStudent };
+
+const getAssignmentsForAdmin = asynHandler(async (req, res) => {
+  try {
+    const admin = await User.findById(req.user._id).select(
+      "userName email students"
+    );
+
+    let assignmentsByAdmin = await File.aggregate([
+      {
+        $match: {
+          owner: admin._id,
+        },
+      },
+    ]);
+
+    console.log(assignmentsByAdmin);
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          assignmentsByAdmin,
+          "All Assignments by fetched successfully"
+        )
+      );
+  } catch (error) {
+    console.log(error);
+  }
+});
+module.exports = { addNewStudent, getOwnStudent, getAssignmentsForAdmin };
