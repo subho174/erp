@@ -2,8 +2,10 @@ import React, { useEffect, useState, useContext } from "react";
 import ProfileContext from "./ProfileContext";
 import axios from "axios";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 const AdminUtils2 = () => {
+  const navigate = useNavigate();
   const { backend_url, students, fetchUser, Toast, Toast_2, fetchAllStudents } =
     useContext(ProfileContext);
   const [studentId, setstudentId] = useState();
@@ -20,9 +22,9 @@ const AdminUtils2 = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    console.log(studentId);
-  }, [studentId]);
+  // useEffect(() => {
+  //   console.log(studentId);
+  // }, [studentId]);
 
   const addStudent = (event) => {
     event.preventDefault();
@@ -56,7 +58,7 @@ const AdminUtils2 = () => {
   return (
     <>
       <Navbar isLoggedIn={true} />
-      <div className="w-[80vw] md:w-[40vw] lg:w-[30vw] xl:w-[25vw] p-[1rem_1.5rem] mt-[3vh] bg-white rounded-[0.75rem] mx-auto">
+      <div className="w-[80vw] md:w-[40vw] lg:w-[30vw] xl:w-[25vw] p-[1rem_1.5rem] m-[5vh_0] bg-white rounded-[0.75rem] mx-auto">
         <h4 className="text-[1.75rem] font-medium text-center">
           Add New Student
         </h4>
@@ -81,6 +83,12 @@ const AdminUtils2 = () => {
             Add
           </button>
         </form>
+      </div>
+      <div className="flex justify-center">
+        <button style={{ width: "200px" }} onClick={() => navigate(-1)}>
+          <i className="fa-solid fa-arrow-left mr-2"></i>
+          Back to dashboard
+        </button>
       </div>
     </>
   );

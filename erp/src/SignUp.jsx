@@ -90,7 +90,7 @@ const SignUp = () => {
   return (
     <>
       <Navbar />
-      <div className="signup w-[90vw] md:w-[55vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem] ">
+      <div className="signup w-[90vw] md:w-[55vw] lg:w-[45vw] xl:w-[30vw] p-[1rem_1.5rem] mt-[5rem] bg-white flex flex-col justify-center items-center rounded-[0.75rem]">
         <header className="text-[1.5rem] font-bold">Sign Up</header>
         <form
           className="mt-[1rem] w-[100%]"

@@ -8,7 +8,7 @@ export const ProfileProvider = ({ children }) => {
   const [profileData, setprofileData] = useState();
   const [students, setstudents] = useState([]);
   const [isAdmin, setisAdmin] = useState(true);
-  const [isSmallScreen, setisSmallScreen] = useState(true);
+  const [showFeedbackForm, setshowFeedbackForm] = useState(false);
 
   const backend_url = import.meta.env.VITE_BACKEND_URL;
   const token = localStorage.getItem("accessToken");
@@ -18,13 +18,9 @@ export const ProfileProvider = ({ children }) => {
     },
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setisSmallScreen(window.innerWidth <= 600);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // useEffect(() => {
+  //   console.log(showFeedbackForm);
+  // }, [showFeedbackForm]);
 
   const fetchUser = () => {
     axios
@@ -91,7 +87,8 @@ export const ProfileProvider = ({ children }) => {
         fetchAllStudents,
         isAdmin,
         setisAdmin,
-        isSmallScreen
+        showFeedbackForm,
+        setshowFeedbackForm,
       }}
     >
       {children}

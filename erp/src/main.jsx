@@ -10,7 +10,7 @@ import Student from "./Student.jsx";
 import Login from "./Login.jsx";
 import Feedback from "./Feedback.jsx";
 import { ProfileProvider } from "./ProfileContext.jsx";
-import AdminUtils2 from "./AdminUtils2.jsx.jsx";
+import AdminUtils2 from "./AdminUtils2.jsx";
 
 const root = document.getElementById("root");
 

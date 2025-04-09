@@ -35,8 +35,8 @@ button:hover {
 }
 
 @layer components {
-  body{
-    @apply bg-gray-100
+  body {
+    @apply bg-gray-100;
   }
   .labels {
     @apply flex flex-col;
@@ -51,9 +51,12 @@ button:hover {
     @apply text-[1.25rem] border-2 cursor-pointer bg-[#0f172a] text-white p-[0.35rem_0.75rem] rounded-[0.5rem] transform hover:translate-y-2 duration-400;
   } */
   li {
-    @apply text-[1.15rem] p-[0.35rem_0.75rem] rounded-[0.5rem] cursor-pointer hover:bg-gray-200
-  } 
+    @apply text-[1.15rem] font-medium p-[0.35rem_0.75rem] rounded-[0.5rem] cursor-pointer hover:bg-gray-200;
+  }
   .profile_label {
     @apply text-[1.15rem] font-semibold;
+  }
+  .smallScreenli li {
+    @apply text-center rounded-none;
   }
 }

@@ -6,18 +6,19 @@ import Swal from "sweetalert2";
 
 const Navbar = ({ isLoggedIn }) => {
   const navigate = useNavigate();
-  let {
-    profileData,
-    setprofileData,
-    backend_url,
-    Toast,
-    Toast_2,
-    isAdmin,
-    isSmallScreen,
-  } = useContext(ProfileContext);
-  // console.log(profileData);
+  let { profileData, setprofileData, backend_url, Toast, Toast_2, isAdmin } =
+    useContext(ProfileContext);
   const [profile, setprofile] = useState(false);
   const [showMenu, setshowMenu] = useState(false);
+  const [isSmallScreen, setisSmallScreen] = useState(window.innerWidth <= 600);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setisSmallScreen(window.innerWidth <= 600);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const logOut = () => {
     const token = localStorage.getItem("accessToken");
@@ -65,42 +66,12 @@ const Navbar = ({ isLoggedIn }) => {
     <div className="w-[100%]">
       <nav className="flex justify-between items-center p-[0.5rem_1rem] md:p-[0.5rem_2rem] bg-white">
         <p className="font-bold text-[2rem]">AcadHub</p>
-
         {showMenu && isSmallScreen ? (
           <>
             <i
               onClick={() => setshowMenu(!showMenu)}
               class="fa-solid fa-xmark text-2xl"
             ></i>
-            <div
-              className={`fixed top-16 left-0 w-[100%] bg-white shadow-lg p-[1rem] transform transition-transform duration-500 ease-in-out ${
-                showMenu ? "translate-x-0" : "-translate-x-full"
-              }`}
-            >
-              <ul className="flex flex-col gap-[1rem] items-center">
-                {isLoggedIn && isAdmin ? (
-                  <li onClick={() => navigate("/dashboard/admin/students")}>
-                    Students
-                  </li>
-                ) : (
-                  ""
-                )}
-                {isLoggedIn ? (
-                  <li onClick={() => setprofile(true)}>Profile</li>
-                ) : (
-                  ""
-                )}
-                <li>
-                  <a
-                    onClick={
-                      isLoggedIn ? () => logOut() : () => navigate("/login")
-                    }
-                  >
-                    {isLoggedIn ? "Log out" : "Sign In"}
-                  </a>
-                </li>
-              </ul>
-            </div>
           </>
         ) : (
           <ul className="flex gap-[1rem] items-center">
@@ -137,6 +108,37 @@ const Navbar = ({ isLoggedIn }) => {
           </ul>
         )}
       </nav>
+      {showMenu && isSmallScreen ? (
+        <div
+          className={`fixed top-16 left-0 w-[100%] p-[0.5rem_0] z-10 bg-white shadow-lg transform transition-transform duration-500 ease-in-out ${
+            showMenu ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <ul className="flex flex-col gap-[1rem] smallScreenli">
+            {isLoggedIn && isAdmin ? (
+              <li onClick={() => navigate("/dashboard/admin/students")}>
+                Students
+              </li>
+            ) : (
+              ""
+            )}
+            {isLoggedIn ? (
+              <li onClick={() => setprofile(true)}>Profile</li>
+            ) : (
+              ""
+            )}
+            <li>
+              <a
+                onClick={isLoggedIn ? () => logOut() : () => navigate("/login")}
+              >
+                {isLoggedIn ? "Log out" : "Sign In"}
+              </a>
+            </li>
+          </ul>
+        </div>
+      ) : (
+        ""
+      )}
       <div
         className={`fixed top-0 right-0 w-[100%] md:w-[50%] lg:w-[40%] xl:w-[25%] h-full bg-white shadow-lg p-[3rem_2rem] transform transition-transform duration-500 ease-in-out z-20 ${
           profile ? "translate-x-0" : "translate-x-full"

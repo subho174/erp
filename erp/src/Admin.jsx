@@ -24,7 +24,8 @@ const Admin = () => {
 
   useEffect(() => {
     axios
-      .get(`${backend_url}/user/get-assignments`, config)
+      // .get(`${backend_url}/user/admin/assignment-for-admin`, config)
+      .get("http://localhost:9000/user/admin/assignment-for-admin", config)
       .then((res) => {
         console.log(res);
         setassignments(res.data.data);
