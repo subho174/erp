@@ -56,6 +56,9 @@ button:hover {
   .profile_label {
     @apply text-[1.15rem] font-semibold;
   }
+  i{
+    @apply cursor-pointer
+  }
   .smallScreenli li {
     @apply text-center rounded-none;
   }

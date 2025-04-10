@@ -43,7 +43,12 @@ const Navbar = ({ isLoggedIn }) => {
           title: "Logging Out...",
         });
         axios
-          .post(`${backend_url}/user/logout`, {}, config)
+          .post(
+            `${backend_url}/user/logout`,
+            //"http://localhost:9000/user/logout",
+            {},
+            { ...config, withCredentials: true }
+          )
           .then((res) => {
             console.log(res);
             localStorage.removeItem("accessToken");
@@ -82,7 +87,7 @@ const Navbar = ({ isLoggedIn }) => {
               ></i>
             ) : (
               <>
-                {isLoggedIn && isAdmin ? (
+                {isLoggedIn && profileData && profileData.isAdmin ? (
                   <li onClick={() => navigate("/dashboard/admin/students")}>
                     Students
                   </li>
@@ -94,15 +99,20 @@ const Navbar = ({ isLoggedIn }) => {
                 ) : (
                   ""
                 )}
-                <li>
-                  <a
-                    onClick={
-                      isLoggedIn ? () => logOut() : () => navigate("/login")
-                    }
-                  >
-                    {isLoggedIn ? "Log out" : "Sign In"}
-                  </a>
+                <li
+                  onClick={
+                    isLoggedIn ? () => logOut() : () => navigate("/login")
+                  }
+                >
+                  {isLoggedIn ? "Log out" : "Sign In"}
                 </li>
+                {profileData ? (
+                  <div className="rounded-[50%] text-[1.1rem] flex items-center justify-center text-white w-10 h-10 bg-black">
+                    {profileData.userName[0].toUpperCase()}
+                  </div>
+                ) : (
+                  ""
+                )}
               </>
             )}
           </ul>
@@ -115,7 +125,7 @@ const Navbar = ({ isLoggedIn }) => {
           }`}
         >
           <ul className="flex flex-col gap-[1rem] smallScreenli">
-            {isLoggedIn && isAdmin ? (
+            {isLoggedIn && profileData && profileData.isAdmin ? (
               <li onClick={() => navigate("/dashboard/admin/students")}>
                 Students
               </li>
@@ -127,12 +137,10 @@ const Navbar = ({ isLoggedIn }) => {
             ) : (
               ""
             )}
-            <li>
-              <a
-                onClick={isLoggedIn ? () => logOut() : () => navigate("/login")}
-              >
-                {isLoggedIn ? "Log out" : "Sign In"}
-              </a>
+            <li
+              onClick={isLoggedIn ? () => logOut() : () => navigate("/login")}
+            >
+              {isLoggedIn ? "Log out" : "Sign In"}
             </li>
           </ul>
         </div>

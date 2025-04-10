@@ -7,6 +7,7 @@ const ApiResponse = require("../utils/ApiResponse");
 const asynHandler = require("../utils/asyncHandler");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const sendMail = require("../utils/sendMail");
+const jwt = require("jsonwebtoken");
 
 const generateToken = async (userId) => {
   try {
@@ -22,6 +23,35 @@ const generateToken = async (userId) => {
     console.log(error);
   }
 };
+
+const refreshAccessToken = asynHandler(async (req, res) => {
+  try {
+    console.log(req.cookie, req.cookies, req.header.cookie);
+
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken)
+      return res
+        .status(400)
+        .json(new ApiError(400, {}, "refresh Token not found"));
+
+    const verifyToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    console.log(verifyToken);
+
+    const user = await User.findById(verifyToken._id);
+    const newAccessToken = user.generateAccessToken();
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, { newAccessToken, user }, "new accessToken"));
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
 
@@ -76,13 +106,16 @@ const registerUser = asynHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: true, // for localhost secure will be false, and for production secure will be true
   };
 
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("refreshToken", refreshToken, {
+      ...options,
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+    })
     .json(
       new ApiResponse(
         200,
@@ -126,7 +159,10 @@ const logInUser = asynHandler(async (req, res) => {
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("refreshToken", refreshToken, {
+      ...options,
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+    })
     .json(
       new ApiResponse(
         200,
@@ -259,7 +295,7 @@ const getAssignmentsForStudent = asynHandler(async (req, res) => {
       assignments.push(assignmentsOfAdmin);
       // console.log(assignments);
     }
-    console.log(assignments);
+    // console.log(assignments);
     return res
       .status(200)
       .json(
@@ -373,7 +409,7 @@ const getFeedbacks = asynHandler(async (req, res) => {
 
 const sendMailToUser = asynHandler(async (req, res) => {
   const { recipients, subject, body } = req.body;
-  console.log(recipients, subject, body);
+  // console.log(recipients, subject, body);
   let allRecipients = [];
   recipients.map((recipient) => {
     allRecipients.push(recipient.email);
@@ -403,6 +439,7 @@ const sendMailToUser = asynHandler(async (req, res) => {
 
 module.exports = {
   registerUser,
+  refreshAccessToken,
   logInUser,
   logOutUser,
   getUser,

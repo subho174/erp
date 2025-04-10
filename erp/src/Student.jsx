@@ -18,7 +18,6 @@ const Student = () => {
     },
   };
   // console.log(userData, isLoggedIn);
-
   useEffect(() => {
     axios
       .patch(`${backend_url}/user/assignment-for-student`, {}, config)
@@ -104,9 +103,9 @@ const Assignments = ({ allFiles }) => {
       });
   };
 
-  return allFiles ? (
+  return allFiles && allFiles.length > 0 ? (
     allFiles.map((files, i) => {
-      return files ? (
+      return files && files.length > 0 ? (
         <div key={i} className="flex flex-col gap-4">
           <div className="flex text-xl">
             <p className="font-semibold mr-2">Assignment from : </p>
@@ -177,7 +176,7 @@ const Assignments = ({ allFiles }) => {
           </div>
         </div>
       ) : (
-        <p>No Assignments available for this teacher</p>
+        <p>No Assignments available</p>
       );
     })
   ) : (

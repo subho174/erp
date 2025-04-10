@@ -98,7 +98,7 @@ const Assignments = ({ assignments }) => {
       });
   };
 
-  return assignments ? (
+  return assignments && assignments.length > 0 ? (
     assignments.map((file, i) => {
       let type = file.file_url;
       let due_date = file.due_date;
@@ -151,6 +151,6 @@ const Assignments = ({ assignments }) => {
       );
     })
   ) : (
-    <p>No assignmaents available</p>
+    <p>No Assignments available</p>
   );
 };

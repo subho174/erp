@@ -26,9 +26,15 @@ const Login = () => {
       title: "Logging in..",
     });
     axios
-      .post(`${backend_url}/user/login`, formData)
+      .post(`${backend_url}/user/login`, formData, {
+        withCredentials: true,
+      })
+      // .post(`http://localhost:9000/user/login`, formData, {
+      //   withCredentials: true,
+      // })
       .then(function (response) {
         setisLoading(false);
+        localStorage.removeItem("accessToken");
         localStorage.setItem("accessToken", response.data.data.accessToken);
         let userDetails = [response.data.data.loggedInUser];
         //console.log(userDetails, userDetails[0].isAdmin);
