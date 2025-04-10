@@ -51,7 +51,7 @@ const refreshAccessToken = asynHandler(async (req, res) => {
     console.log(error);
   }
 });
-secure;
+
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
 
