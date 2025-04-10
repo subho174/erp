@@ -51,7 +51,7 @@ const refreshAccessToken = asynHandler(async (req, res) => {
     console.log(error);
   }
 });
-
+secure;
 const registerUser = asynHandler(async (req, res) => {
   const { userName, email, password, isAdmin } = req.body;
 
@@ -107,6 +107,7 @@ const registerUser = asynHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true, // for localhost secure will be false, and for production secure will be true
+    sameSite: "None",
   };
 
   return res
@@ -154,6 +155,7 @@ const logInUser = asynHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "None",
   };
 
   return res
@@ -180,6 +182,7 @@ const logOutUser = asynHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "None",
   };
 
   return res

@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import "./App.css";
 import SignUp from "./SignUp";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ProfileContext from "./ProfileContext";
 
 function App() {
   const navigate = useNavigate();
+  let { backend_url } = useContext(ProfileContext);
+
   useEffect(() => {
     const checkIfLoggedIn = async () => {
       axios
